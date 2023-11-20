@@ -7,11 +7,13 @@ import AddStation from './Page/AddStation';
 import AddMessage from './Page/AddMessage';
 import AddMarquee from './Page/AddMarquee';
 import ActionMarquee from './Page/ActionMarquee';
+import LoginPage from './Page/Authentication/LoginPage';
 
 function App() {
   return (
     <Layout>
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/train" element={<AddTrain />} />
         <Route path="/category" element={<AddCategory />} />
         <Route path="/station" element={<AddStation />} />

@@ -1,9 +1,15 @@
 import React from 'react'
 import MaterialSideBar from './MaterialSideBar';
+import { useLocation } from 'react-router-dom'
+
 const Layout = ({ children }) => {
+
+  const location = useLocation();
+
   return (
     <>
-      <div className='flex w-full h-screen select-none'>
+     { !location.pathname.includes('/login') ?
+     <div className='flex w-full h-screen select-none'>
         <div className='z-30'>
           <MaterialSideBar />
         </div>
@@ -14,10 +20,14 @@ const Layout = ({ children }) => {
 
         </div>
         <div className='flex flex-row h-16 w-full absolute top-0 left-0 z-0 justify-end'>
-          {/* <MaterialNavBar /> */}
+         
         </div>
 
+      </div> : 
+      <div>
+        { children }
       </div>
+      }
     </>
   )
 }
