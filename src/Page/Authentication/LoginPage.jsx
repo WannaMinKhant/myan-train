@@ -6,10 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import { MdVisibility,MdVisibilityOff } from "react-icons/md";
+import { MdVisibility,MdVisibilityOff,MdOutlineKeyboardArrowRight  } from "react-icons/md";
 import Button from '@mui/material/Button';
 import { useLoginMutation } from '../../ApiService/authApiSlice';
 import { Spinner } from "@material-tailwind/react";
@@ -33,9 +32,11 @@ const LoginPage = () => {
 
     const checkAuth = async () => {
       const auth = {
-        username: nameRef.current.value,
+        name: nameRef.current.value,
         password: passwordRef.current.value,
-        authKey: "fruitysenseDeveloperTeam",
+        iv: "passenger-informations-system",
+        station_id:'0',
+        role_id:'1',
       };
   
       await login(auth);
@@ -105,14 +106,14 @@ const LoginPage = () => {
           />
         </FormControl>
         
-        <div>
+        <div className='w-fit m-auto flex flex-row'>
         {result.isLoading ? (
-              <Button variant="outlined">
+              <Button variant="contained">
                 <Spinner />
               </Button>
             ) : (
-              <Button variant="outlined" sx={{ m: 1, width: '30ch'}} onClick={checkAuth}>
-                LogIn
+              <Button variant="contained" sx={{ m: 1, width: '30ch'}} onClick={checkAuth}>
+                LogIn<span><MdOutlineKeyboardArrowRight size={30}/></span>
               </Button>
             )}
         </div>

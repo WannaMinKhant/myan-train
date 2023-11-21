@@ -6,33 +6,27 @@ import {
     List,
     ListItem,
     ListItemPrefix,
-    ListItemSuffix,
-    Chip,
     Accordion,
     AccordionHeader,
     AccordionBody,
 } from "@material-tailwind/react";
 import {
     PresentationChartBarIcon,
-    ShoppingBagIcon,
-    UserCircleIcon,
     Cog6ToothIcon,
-    InboxIcon,
     PowerIcon,
 } from "@heroicons/react/24/solid";
+import Logo from "../image/images.jpeg"
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { FaUserTie, FaUser, FaSitemap, FaUserSecret } from "react-icons/fa";
-import { AiOutlineDashboard } from 'react-icons/ai';
+import { FaSitemap,  } from "react-icons/fa";
 import { BiCategoryAlt } from 'react-icons/bi';
 import { HiDocumentReport } from 'react-icons/hi'
-import { SiUnilever } from 'react-icons/si'
-import { IoIosCopy, IoLogoUsd, IoMdTrain } from 'react-icons/io';
-import { Link, location } from 'react-router-dom';
+import { IoIosCopy, IoMdTrain } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 
 const MaterialSideBar = () => {
     const [open, setOpen] = useState(0);
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
 
     const handleOpen = (value) => {
         setOpen(open === value ? 0 : value);
@@ -124,10 +118,10 @@ const MaterialSideBar = () => {
                 <List className="text-white">
                     <ListItem className="p-3 group">
                         <ListItemPrefix>
-                            <PresentationChartBarIcon className="h-5 w-5 group-hover:text-[#1b2c3e]" color="white" />
+                           <img src={Logo} alt={"logo"} className="w-10 h-10 rounded-full"/>
                         </ListItemPrefix>
-                        <Typography color="white" className='mr-auto font-normal text-xl group-hover:text-[#1b2c3e]'>
-                            SDS Admin
+                        <Typography color="white" className='mr-auto font-poppins font-normal text-xl group-hover:text-[#1b2c3e]'>
+                            PIS Admin
                         </Typography>
                     </ListItem>
                     <hr className="my-2 border-white-50" />
