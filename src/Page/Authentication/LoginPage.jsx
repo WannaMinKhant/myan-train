@@ -70,11 +70,20 @@ const LoginPage = () => {
             <TextField
                 label="Username"
                 id="outlined-start-adornment"
-                sx={{ m: 1, width: '25ch' }}
+                sx={{ m: 1, width: '30ch', "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "blue",
+                  },
+                },}}
                 ref={nameRef}
+                
                 />
 
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+        <FormControl sx={{ m: 1, width: '30ch', "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "blue",
+                  },
+                },}} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
@@ -102,7 +111,7 @@ const LoginPage = () => {
                 <Spinner />
               </Button>
             ) : (
-              <Button variant="outlined" onClick={checkAuth}>
+              <Button variant="outlined" sx={{ m: 1, width: '30ch'}} onClick={checkAuth}>
                 LogIn
               </Button>
             )}
