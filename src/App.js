@@ -14,11 +14,12 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/train" element={<AddTrain />} />
         <Route path="/category" element={<AddCategory />} />
         <Route path="/station" element={<AddStation />} />
         <Route path="/message" element={<AddMessage />} />
-        <Route path="/marquee" element={<AddMarquee />} />actionMarquee
+        <Route path="/marquee" element={<AddMarquee />} />
         <Route path="/actionMarquee" element={<ActionMarquee />} />
       </Routes>
     </Layout>

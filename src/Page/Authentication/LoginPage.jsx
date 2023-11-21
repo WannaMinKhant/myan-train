@@ -1,4 +1,4 @@
-import React, { useEffect , useState} from 'react'
+import React, { useEffect , useState, useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../image/images.jpeg'
 
@@ -11,18 +11,47 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { MdVisibility,MdVisibilityOff } from "react-icons/md";
 import Button from '@mui/material/Button';
+import { useLoginMutation } from '../../ApiService/authApiSlice';
+import { Spinner } from "@material-tailwind/react";
 
 const LoginPage = () => {
 
     const navigate = useNavigate();
 
+    const [login, result] = useLoginMutation();
+
+    const nameRef = useRef("");
+    const passwordRef = useRef("");
+
     useEffect(()=>{
         const auth = localStorage.getItem('auth');
         if(!auth){
-            navigate("/dashboard");
+            navigate("/login");
         }
 
-    },)
+    },[])
+
+    const checkAuth = async () => {
+      const auth = {
+        username: nameRef.current.value,
+        password: passwordRef.current.value,
+        authKey: "fruitysenseDeveloperTeam",
+      };
+  
+      await login(auth);
+      
+    };
+
+    useEffect(() => {
+      if (result.isSuccess) {
+        
+        navigate("/dashboard");
+      } else if (result.isError) {
+        
+        console.log(result)
+      }
+      console.log('response login')
+    }, [result]);
 
 
     const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +71,7 @@ const LoginPage = () => {
                 label="Username"
                 id="outlined-start-adornment"
                 sx={{ m: 1, width: '25ch' }}
-            
+                ref={nameRef}
                 />
 
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -63,11 +92,20 @@ const LoginPage = () => {
               </InputAdornment>
             }
             label="Password"
+            ref={passwordRef}
           />
         </FormControl>
         
         <div>
-            <Button variant="contained">Login</Button>
+        {result.isLoading ? (
+              <Button variant="outlined">
+                <Spinner />
+              </Button>
+            ) : (
+              <Button variant="outlined" onClick={checkAuth}>
+                LogIn
+              </Button>
+            )}
         </div>
        
         </div>
