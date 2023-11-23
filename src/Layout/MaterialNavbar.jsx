@@ -142,7 +142,7 @@ const MaterialNavBar = () => {
   },[location])
 
   return (
-    <Navbar className="flex-1 w-screen h-16 mr-4 lg:pl-6" fullWidth>
+    <Navbar className="flex-1 w-screen h-16 lg:pl-6" fullWidth>
      <MyDrawer drawerState={drawerState} closeDrawer={()=>setDrawerState(!drawerState)}/>
       <div className="flex items-start justify-between text-blue-gray-900">
         <IconButton
@@ -157,7 +157,6 @@ const MaterialNavBar = () => {
         <div className="flex flex-row items-center ">
           <ProfileMenu />
         </div>
-        
       </div>
     </Navbar>
   );

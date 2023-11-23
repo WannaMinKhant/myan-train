@@ -21,6 +21,7 @@ import { FaSitemap,  } from "react-icons/fa";
 import { BiCategoryAlt } from 'react-icons/bi';
 import { HiDocumentReport } from 'react-icons/hi'
 import { IoIosCopy, IoMdTrain } from 'react-icons/io';
+import { MdManageAccounts } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 
@@ -40,10 +41,11 @@ const MaterialSideBar = () => {
             accordion: []
         },
         {
-            'title': 'Train',
-            'icon': IoMdTrain,
-            'link': '/train',
-            accordion: []
+            'title': 'Station Account',
+            'icon': MdManageAccounts,
+            'link': '/station-account',
+            accordion: [
+            ]
         },
         {
             'title': 'Station',
@@ -56,6 +58,12 @@ const MaterialSideBar = () => {
             'title': 'Category',
             'icon': BiCategoryAlt,
             'link': '/category',
+            accordion: []
+        },
+        {
+            'title': 'Train',
+            'icon': IoMdTrain,
+            'link': '/train',
             accordion: []
         },
         {

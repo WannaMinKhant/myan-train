@@ -5,15 +5,15 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { IoAddCircleOutline } from "react-icons/io5";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { BiTrash } from "react-icons/bi";
+import { BiTrash, BiHome } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
-import MyToolTip from '../Components/MyToolTip';
+import MyToolTip from '../../Components/MyToolTip';
+import { Breadcrumbs } from "@material-tailwind/react";
 
 import {
     Button,
     Input,
-    Card,
     Typography,
     Drawer,
     IconButton,
@@ -21,12 +21,13 @@ import {
     Tooltip,
 } from "@material-tailwind/react";
 
+
 import {
     useGetTrainQuery,
     useAddTrainMutation,
     useEditTrainMutation,
     useDeleteTrainMutation
-} from '../ApiService/trainSlice'
+} from '../../ApiService/trainSlice'
 
 const AddTrain = () => {
     const trainRef = useRef();
@@ -44,16 +45,12 @@ const AddTrain = () => {
     const [editTrain, editTrainResult] = useEditTrainMutation();
     const [deleteTrain, deleteTrainesult] = useDeleteTrainMutation();
 
-    const openDrawer = async (e) => {
-        // setEditCusState(cus);
-
-        // setEditCusPhoneState(cus);
-        // setEditCusAddressState(cus);
+    const openDrawer = (e) => {
         console.log(e);
         setEditTrainState(e.id);
         edittrainRef.current.value = e.train_no;
         edittrainEngRef.current.value = e.eng_train_no;
-        await setOpen(true);
+        setOpen(true);
     };
     const closeDrawer = () => setOpen(false);
 
@@ -63,6 +60,7 @@ const AddTrain = () => {
             category_id: cateValue,
             train_no: trainRef.current.value,
             eng_train_no: trainEngRef.current.value,
+            lane_id: 1,
             status: "0",
             note: "0"
         }
@@ -79,6 +77,7 @@ const AddTrain = () => {
             category_id: "1",
             train_no: edittrainRef.current.value,
             eng_train_no: edittrainEngRef.current.value,
+            lane_id:1,
         }
         await editTrain(body);
         refetch();
@@ -108,25 +107,34 @@ const AddTrain = () => {
             }
         });
     };
+
+    const lane = [];
+
     const header = [
 
         {
             field: 'train_no',
             headerName: 'ရထား',
             width: 150,
-            editable: true,
+            editable: false,
         },
         {
             field: 'eng_train_no',
             headerName: 'Train',
             width: 100,
-            editable: true,
+            editable: false,
         },
         {
             field: 'category_id',
             headerName: 'Way',
             width: 460,
-            editable: true,
+            editable: false,
+        },
+        {
+            field: 'lane_id',
+            headerName: 'Lane',
+            width: 460,
+            editable: false,
         },
         {
             field: 'action',
@@ -157,13 +165,13 @@ const AddTrain = () => {
             )
         },
     ];
-    return (
 
+    return (
         <div className="flex flex-col gap-4 px-16 max-h-full">
             <Drawer placement="right" open={open} onClose={closeDrawer}>
                 <div className="mb-2 flex items-center justify-between p-4">
                     <Typography variant="h5" color="blue-gray">
-                        Edit Customer
+                        Edit Train
                     </Typography>
                     <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
                         <XMarkIcon strokeWidth={2} className="h-5 w-5" />
@@ -188,11 +196,17 @@ const AddTrain = () => {
                     </Button>
                 </form>
             </Drawer>
-            <div className="flex-row w-full justify-start flex">
+            {/* <div className="flex-row w-full justify-start flex">
                 <p className="px-4 py-2 bg-[#57626c] rounded-lg text-white font-bold">
                     Add Train
                 </p>
-            </div>
+            </div> */}
+                <Breadcrumbs>
+                    <BiHome size={20} className='opacity-50'/>
+                    <p className="font-poppins">
+                        Train
+                    </p>
+                </Breadcrumbs>
             <div className="w-full px-6 py-2 h-22 border-2 border-gray-200 md:flex flex-row gap-2 items-end justify-center rounded-xl">
                 <form className="flex flex-1 xl:flex-row md:flex-col gap-2 m-2" onSubmit={addTrainHandler}>
                     <Input

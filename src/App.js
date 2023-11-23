@@ -1,5 +1,5 @@
 import Layout from './Layout/layout';
-import AddTrain from './Page/AddTrain';
+import AddTrain from './Page/Train/AddTrain';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import AddCategory from './Page/addCategory';
@@ -9,6 +9,7 @@ import AddMarquee from './Page/AddMarquee';
 import ActionMarquee from './Page/ActionMarquee';
 import LoginPage from './Page/Authentication/LoginPage';
 import DashboardPage from './Page/Dashboard/DashboardPage';
+import StationAccount from './Page/Station/StationAccount';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/train" element={<AddTrain />} />
         <Route path="/category" element={<AddCategory />} />
         <Route path="/station" element={<AddStation />} />
+        <Route path="/station-account" element={<StationAccount />} />
         <Route path="/message" element={<AddMessage />} />
         <Route path="/marquee" element={<AddMarquee />} />
         <Route path="/actionMarquee" element={<ActionMarquee />} />
