@@ -12,6 +12,7 @@ import { MdVisibility,MdVisibilityOff,MdOutlineKeyboardArrowRight  } from "react
 import Button from '@mui/material/Button';
 import { useLoginMutation } from '../../ApiService/authApiSlice';
 import { Spinner } from "@material-tailwind/react";
+import AlertComponent from '../../Components/AlertComponent';
 
 const LoginPage = () => {
 
@@ -21,6 +22,20 @@ const LoginPage = () => {
 
     const nameRef = useRef("");
     const passwordRef = useRef("");
+
+
+    const [open,setOpen] = useState(false);
+
+    const handleClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpen(false);
+    };
+  
+    const handleClick = () => {
+      setOpen(true);
+    };
 
     useEffect(()=>{
         const auth = localStorage.getItem('auth');
@@ -38,6 +53,8 @@ const LoginPage = () => {
         station_id:'0',
         role_id:'1',
       };
+
+      // console.log(auth)
   
       await login(auth);
       
@@ -45,13 +62,17 @@ const LoginPage = () => {
 
     useEffect(() => {
       if (result.isSuccess) {
-        
+        console.log(result)
+        localStorage.setItem('token',result.data.token);
+        localStorage.setItem('user',JSON.stringify(result.data.data));
+        localStorage.setItem('auth',1);
+        handleClick();
         navigate("/dashboard");
       } else if (result.isError) {
-        
+        handleClick();
         console.log(result)
       }
-      console.log('response login')
+      // console.log('response login')
     }, [result]);
 
 
@@ -66,7 +87,7 @@ const LoginPage = () => {
     <div className='row flex-row w-full h-screen bg-blue-gray-300 justify-center items-center'>
         
         <div className='m-auto w-1/3 text-center'>
-            <img src={logo} alt='' className='rounded-full p-4 inline-block'/>
+            <img src={logo} alt='' className='rounded-full p-4 inline-block' width={150} height={150}/>
             <p className='w-full text-lg font-bold'>Login Here</p>
             <TextField
                 label="Username"
@@ -76,35 +97,35 @@ const LoginPage = () => {
                     borderColor: "blue",
                   },
                 },}}
-                ref={nameRef}
+                inputRef={nameRef}
                 
                 />
 
-        <FormControl sx={{ m: 1, width: '30ch', "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "blue",
-                  },
-                },}} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-            ref={passwordRef}
-          />
-        </FormControl>
+          <FormControl sx={{ m: 1, width: '30ch', "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "blue",
+                    },
+                  },}} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+              inputRef={passwordRef}
+            />
+          </FormControl>
         
         <div className='w-fit m-auto flex flex-row'>
         {result.isLoading ? (
@@ -117,7 +138,7 @@ const LoginPage = () => {
               </Button>
             )}
         </div>
-       
+        <AlertComponent open={open} handleClose={handleClose} result={result}/>
         </div>
     </div>
   )

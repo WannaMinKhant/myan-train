@@ -17,12 +17,13 @@ import {
 } from "@heroicons/react/24/solid";
 import Logo from "../image/images.jpeg"
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { FaSitemap,  } from "react-icons/fa";
-import { BiCategoryAlt } from 'react-icons/bi';
+import { FaSitemap  } from "react-icons/fa";
+import { ImOffice } from "react-icons/im";
 import { HiDocumentReport } from 'react-icons/hi'
-import { IoIosCopy, IoMdTrain } from 'react-icons/io';
-import { MdManageAccounts } from 'react-icons/md';
+import { IoMdTrain } from 'react-icons/io';
+import { MdManageAccounts,MdAltRoute  } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { TfiAnnouncement } from "react-icons/tfi";
 
 
 const MaterialSideBar = () => {
@@ -49,15 +50,15 @@ const MaterialSideBar = () => {
         },
         {
             'title': 'Station',
-            'icon': IoIosCopy,
+            'icon': ImOffice,
             'link': '/station',
             accordion: [
             ]
         },
         {
-            'title': 'Category',
-            'icon': BiCategoryAlt,
-            'link': '/category',
+            'title': 'Lane',
+            'icon': MdAltRoute ,
+            'link': '/lane',
             accordion: []
         },
         {
@@ -74,23 +75,23 @@ const MaterialSideBar = () => {
             ]
         },
         {
-            'title': 'Marquee',
+            'title': 'Announcement',
             'icon': HiDocumentReport,
             'link': '/marquee',
             accordion: []
         },
         {
-            'title': 'Action Marquee',
+            'title': 'Manage Announcement',
             'icon': HiDocumentReport,
             'link': '/actionMarquee',
             accordion: []
         },
-        // {
-        //     'title': 'Unit',
-        //     'icon': SiUnilever,
-        //     'link': '/unit',
-        //     accordion: []
-        // },
+        {
+            'title': 'Advertising',
+            'icon': TfiAnnouncement,
+            'link': '/ads-manager',
+            accordion: []
+        },
         // {
         //     'title': 'User',
         //     'icon': FaUserSecret,

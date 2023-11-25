@@ -6,6 +6,25 @@ export const stationSlice = ApiSlice.injectEndpoints({
             query: () => '/station'
         }),
 
+        getStationAccount: builder.query({
+            query: () => '/station-account'
+        }),
+
+        addStationAccount: builder.mutation({
+            query: (body) => ({
+                url: '/register',
+                method: 'POST',
+                body,
+            }),
+        }),
+
+        deleteStationAccount: builder.mutation({
+            query: (id) => ({
+                url: `/delete-account/${id}`,
+                method: 'DELETE',
+            })
+        }),
+
         addStation: builder.mutation({
             query: (body) => ({
                 url: '/station',
@@ -34,7 +53,10 @@ export const stationSlice = ApiSlice.injectEndpoints({
 
 export const {
     useGetStationQuery,
+    useGetStationAccountQuery,
     useAddStationMutation,
     useEditStationMutation,
-    useDeleteStationMutation
+    useDeleteStationMutation,
+    useAddStationAccountMutation,
+    useDeleteStationAccountMutation,
 } = stationSlice

@@ -4,12 +4,12 @@ import {
     Tooltip,
 } from "@material-tailwind/react";
 
-const MyToolTip = ({ children, style, content },) => {
+const MyToolTip = ({ children, styles, content },) => {
     return (
 
         <Tooltip
             content={`${content}`}
-            className={`${style}`}
+            className={`${styles}`}
         >
             {children}
         </Tooltip>

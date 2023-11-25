@@ -5,20 +5,20 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { IoAddCircleOutline } from "react-icons/io5";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { BiTrash } from "react-icons/bi";
+import { BiTrash, BiHome } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
-import MyToolTip from '../Components/MyToolTip';
+import MyToolTip from '../../Components/MyToolTip';
+import { Breadcrumbs } from "@material-tailwind/react";
+import AlertComponent from '../../Components/AlertComponent';
 
 import {
     Button,
     Input,
-    Card,
     Typography,
     Drawer,
     IconButton,
     Spinner,
-    Tooltip,
 } from "@material-tailwind/react";
 
 import {
@@ -26,33 +26,50 @@ import {
     useAddStationMutation,
     useEditStationMutation,
     useDeleteStationMutation
-} from '../ApiService/stationSlice'
+} from '../../ApiService/stationSlice'
 
 const AddStation = () => {
     const stationRef = useRef();
     const stationEngRef = useRef();
     const editstationRef = useRef();
     const editstationEngRef = useRef();
-    const [stationValue, setStationValue] = useState()
+    const stationOrderRef = useRef();
+    const editStationOrderRef = useRef();
 
     const [editStationState, setEditStationState] = useState();
     const [open, setOpen] = useState(false);
 
+    const [alertResult, setAlertResult] = useState(false);
+
 
     const { data, isLoading, isSuccess, refetch } = useGetStationQuery();
-    const [addStation, addTrainResult] = useAddStationMutation();
-    const [editStation, editTrainResult] = useEditStationMutation();
-    const [deleteStation, deleteTrainesult] = useDeleteStationMutation();
+    const [addStation, addStationResult] = useAddStationMutation();
+    const [editStation, editStationResult] = useEditStationMutation();
+    const [deleteStation, deleteStationResult] = useDeleteStationMutation();
+
+    // alert box
+    const [openAlert,setOpenAlert] = useState(false);
+
+    const handleClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpenAlert(false);
+    };
+  
+    const handleClick = () => {
+        setOpenAlert(true);
+    };
+
+
 
     const openDrawer = async (e) => {
-        // setEditCusState(cus);
 
-        // setEditCusPhoneState(cus);
-        // setEditCusAddressState(cus);
         console.log(e);
         setEditStationState(e.id);
         editstationRef.current.value = e.name;
         editstationEngRef.current.value = e.eng_name;
+        editStationOrderRef.current.value = e.station_order
         await setOpen(true);
     };
     const closeDrawer = () => setOpen(false);
@@ -60,28 +77,34 @@ const AddStation = () => {
     const addStationHandler = async (e) => {
         e.preventDefault();
         let body = {
-            category_id: stationValue,
+            category_id: 1,
             name: stationRef.current.value,
             eng_name: stationEngRef.current.value,
+            station_order:stationOrderRef.current.value,
         }
         await addStation(body);
         refetch();
         stationRef.current.value = "";
         stationEngRef.current.value = "";
+        stationOrderRef.current.value = "";
     }
 
     const editStationHandler = async (e) => {
+
+        if(editStationResult.isLoading ) return;
         //  e.preventDefault();
         let body = {
             id: editStationState,
             category_id: "1",
             name: editstationRef.current.value,
             eng_name: editstationEngRef.current.value,
+            station_order: editStationOrderRef.current.value,
         }
         await editStation(body);
         refetch();
         editstationRef.current.value = "";
         editstationEngRef.current.value = "";
+        editStationOrderRef.current.value = "";
         closeDrawer();
     }
     const deleteStationHandler = async (id) => {
@@ -89,6 +112,7 @@ const AddStation = () => {
         await deleteStation(id);
         refetch();
     }
+
     const confirmDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -111,14 +135,18 @@ const AddStation = () => {
         {
             field: 'name',
             headerName: 'ဘူတာ',
-            width: 300,
+            flex:1,
             editable: true,
         },
         {
             field: 'eng_name',
             headerName: 'Station',
-            width: 400,
-            editable: true,
+            flex:1,
+        },
+        {
+            field: 'station_order',
+            headerName: 'Station Order',
+            flex:1,
         },
         {
             field: 'action',
@@ -127,7 +155,7 @@ const AddStation = () => {
             renderCell: (params) => (
                 <div className="flex flex-row gap-4 justify-between">
                     {/* <div> */}
-                    <MyToolTip style={'bg-green-500'} content={'Edit'}>
+                    <MyToolTip styles={'bg-green-500'} content={'Edit'}>
                         <IconButton
                             onClick={() => openDrawer(params.row)}
                             // onClick={() => console.log(params)}
@@ -136,7 +164,7 @@ const AddStation = () => {
                             <FaEdit className="h-4 w-4 text-green-600 font-extrabold" />
                         </IconButton>
                     </MyToolTip>
-                    <MyToolTip style={'bg-red-500'} content={'Delete'}>
+                    <MyToolTip styles={'bg-red-500'} content={'Delete'}>
                         <IconButton
                             onClick={() => confirmDelete(params.row.id)}
                             variant="text"
@@ -149,6 +177,37 @@ const AddStation = () => {
             )
         },
     ];
+
+    useEffect(()=>{
+        if(deleteStationResult.isSuccess){
+            setAlertResult(deleteStationResult);
+            handleClick();
+        }else{
+            setAlertResult(deleteStationResult);
+            handleClick();
+        }
+    },[deleteStationResult]);
+
+    useEffect(()=>{
+        if(addStationResult.isSuccess){
+            setAlertResult(addStationResult);
+            handleClick();
+        }else{
+            setAlertResult(addStationResult);
+            handleClick();
+        }
+    },[addStationResult]);
+
+    useEffect(()=>{
+        if(editStationResult.isSuccess){
+            setAlertResult(editStationResult);
+            handleClick();
+        }else{
+            setAlertResult(editStationResult);
+            handleClick();
+        }
+    },[editStationResult]);
+
     return (
 
         <div className="flex flex-col gap-4 px-16 max-h-full">
@@ -165,14 +224,20 @@ const AddStation = () => {
                     <Input
                         type="text"
                         label="ဘူတာ"
-                        defaultValue={open ? editstationEngRef.train_no : ""}
+                        defaultValue={open ? editstationRef.current.value : ""}
                         inputRef={editstationRef}
                     />
                     <Input
                         type="text"
                         label="Station"
-                        defaultValue={open ? editstationEngRef.eng_train_no : ""}
+                        defaultValue={open ? editstationEngRef.current.value : ""}
                         inputRef={editstationEngRef}
+                    />
+                    <Input
+                        type="text"
+                        label="Station"
+                        defaultValue={open ? editStationOrderRef.station_order : ""}
+                        inputRef={editStationOrderRef}
                     />
 
                     <Button onClick={editStationHandler}>
@@ -180,26 +245,35 @@ const AddStation = () => {
                     </Button>
                 </form>
             </Drawer>
-            <div className="flex-row w-full justify-start flex">
-                <p className="px-4 py-2 bg-[#57626c] rounded-lg text-white font-bold">
-                    Add Station
-                </p>
+            <div className='flex flex-row w-full h-fit justify-between items-center'>
+                <Breadcrumbs>
+                    <BiHome size={20} className='opacity-50'/>
+                    <p className="font-poppins">
+                        Station
+                    </p>
+                </Breadcrumbs>
             </div>
             <div className="w-full px-6 py-2 h-22 border-2 border-gray-200 md:flex flex-row gap-2 items-end justify-center rounded-xl">
-                <form className="flex flex-1 xl:flex-row md:flex-col gap-2 m-2" onSubmit={addStationHandler}>
+                <form className="flex flex-1 xl:flex-row md:flex-col flex-col gap-2 m-2" onSubmit={addStationHandler}>
                     <Input
                         type="text"
-                        label="ဘူတာ"
+                        label="ဘူတာ အမည် (မြန်မာ)"
                         // defaultValue={open ? editCustomerRef.customer : ""}
                         inputRef={stationRef}
                     />
                     <Input
                         type="text"
-                        label="Station"
+                        label="Station Name (Eng)"
                         // defaultValue={open ? editCustomerRef.customer : ""}
                         inputRef={stationEngRef}
                     />
-                    {/* <div className="w-72">
+                    <Input
+                        type="number"
+                        label="Station Order (Example: 1)"
+                        // defaultValue={open ? editCustomerRef.customer : ""}
+                        inputRef={stationOrderRef}
+                    />
+                    {/* <div className="md:w-72 lg:w-72 w-20">
                         <Select label="Select Way" onChange={(e) => setCateValue(e)} >
                             <Option value='1'>Circular Train</Option>
                             <Option value='2'>Express Train</Option>
@@ -210,7 +284,7 @@ const AddStation = () => {
                             type="submit"
                             variant="outlined"
                             className="flex items-center gap-3 px-4 py-2 m-1">
-                            {addTrainResult.isLoading ? <Spinner color="indigo" /> : <IoAddCircleOutline strokeWidth={2} className="h-5 w-5" />}
+                            {addStationResult.isLoading ? <Spinner color="indigo" /> : <IoAddCircleOutline strokeWidth={2} className="h-5 w-5" />}
                             Add
                         </Button>
                     </div>
@@ -256,6 +330,7 @@ const AddStation = () => {
                         /> : <></>}
                 </Box>
             </div>
+            <AlertComponent open={openAlert} handleClose={handleClose} result={alertResult}/>
         </div>
     )
 }

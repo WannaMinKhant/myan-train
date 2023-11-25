@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import MyDrawer from "../Components/MyDrawer";
-import { IconButton } from "@material-tailwind/react";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { useLocation , useNavigate} from "react-router-dom";
 import MaterialNavBar from "./MaterialNavbar";
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const [drawerState, setDrawerState] = useState(false);
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const token =  localStorage.getItem('token');
+  //     if(!token){
+  //       navigate('/login')
+  //     }
+  // },[])
 
   return (
     <>

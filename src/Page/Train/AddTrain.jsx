@@ -18,10 +18,9 @@ import {
     Drawer,
     IconButton,
     Spinner,
-    Tooltip,
 } from "@material-tailwind/react";
 
-
+import { useGetLaneQuery } from '../../ApiService/laneSlice';
 import {
     useGetTrainQuery,
     useAddTrainMutation,
@@ -39,6 +38,7 @@ const AddTrain = () => {
     const [editTrainState, setEditTrainState] = useState();
     const [open, setOpen] = useState(false);
 
+    const {data:LaneList,isSuccess:laneSuccess} = useGetLaneQuery();
 
     const { data, isLoading, isSuccess, refetch } = useGetTrainQuery();
     const [addTrain, addTrainResult] = useAddTrainMutation();
@@ -115,26 +115,36 @@ const AddTrain = () => {
         {
             field: 'train_no',
             headerName: 'ရထား',
-            width: 150,
+            width: 200,
             editable: false,
         },
         {
             field: 'eng_train_no',
             headerName: 'Train',
-            width: 100,
+            width: 200,
             editable: false,
         },
         {
             field: 'category_id',
             headerName: 'Way',
-            width: 460,
+            flex: 1,
             editable: false,
+            renderCell: (params) => (
+                <p>
+                    { params.category_id == 1 ? "အမြန်ရထား" : "မြို့ပတ်ရထား"}
+                </p>
+            )
         },
         {
             field: 'lane_id',
             headerName: 'Lane',
-            width: 460,
+            width: 200,
             editable: false,
+            renderCell: (params) => (
+                <p>
+                    { params.row.lane.from + " - " + params.row.lane.to + " ( "  + params.row.lane.name + " )" } 
+                </p>
+            )
         },
         {
             field: 'action',
@@ -143,7 +153,7 @@ const AddTrain = () => {
             renderCell: (params) => (
                 <div className="flex flex-row gap-4 justify-between">
                     {/* <div> */}
-                    <MyToolTip style={'bg-green-500'} content={'Edit'}>
+                    <MyToolTip styles={'bg-green-500'} content={'Edit'}>
                         <IconButton
                             onClick={() => openDrawer(params.row)}
                             // onClick={() => console.log(params)}
@@ -152,7 +162,7 @@ const AddTrain = () => {
                             <FaEdit className="h-4 w-4 text-green-600 font-extrabold" />
                         </IconButton>
                     </MyToolTip>
-                    <MyToolTip style={'bg-red-500'} content={'Delete'}>
+                    <MyToolTip styles={'bg-red-500'} content={'Delete'}>
                         <IconButton
                             onClick={() => confirmDelete(params.row.id)}
                             variant="text"

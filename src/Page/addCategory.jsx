@@ -123,7 +123,7 @@ const AddCategory = () => {
             renderCell: (params) => (
                 <div className="flex flex-row gap-4 justify-between">
                     {/* <div> */}
-                    <MyToolTip style={'bg-green-500'} content={'Edit'}>
+                    <MyToolTip styles={'bg-green-500'} content={'Edit'}>
                         <IconButton
                             onClick={() => openDrawer(params.row)}
                             // onClick={() => console.log(params)}
@@ -132,7 +132,7 @@ const AddCategory = () => {
                             <FaEdit className="h-4 w-4 text-green-600 font-extrabold" />
                         </IconButton>
                     </MyToolTip>
-                    <MyToolTip style={'bg-red-500'} content={'Delete'}>
+                    <MyToolTip styles={'bg-red-500'} content={'Delete'}>
                         <IconButton
                             onClick={() => confirmDelete(params.row.id)}
                             variant="text"

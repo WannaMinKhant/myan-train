@@ -136,7 +136,7 @@ const MaterialNavBar = () => {
   useEffect(()=>{
     setDrawerState(false)
     const auth = localStorage.getItem('auth');
-    if(!auth || !shop){
+    if(!auth){
       navigate("/login");
     }
   },[location])

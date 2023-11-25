@@ -8,18 +8,16 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { BiTrash } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
-import MyToolTip from '../Components/MyToolTip';
+import MyToolTip from '../../Components/MyToolTip';
 
 import {
     Button,
     Input,
-    Card,
     Typography,
     Textarea,
     Drawer,
     IconButton,
     Spinner,
-    Tooltip,
 } from "@material-tailwind/react";
 
 import {
@@ -27,14 +25,14 @@ import {
     useAddMessageMutation,
     useEditMessageMutation,
     useDeleteMessageMutation
-} from '../ApiService/messageSlice'
+} from '../../ApiService/messageSlice'
+import { Breadcrumbs } from "@material-tailwind/react";
+import { BiHome } from "react-icons/bi";
+
 
 const AddMessage = () => {
     const titleRef = useRef();
-    const discRef = useRef();
     const edittitleRef = useRef();
-    const editDiscRef = useRef();
-    const [msgValue, setMsgValue] = useState()
 
     const [editMsgState, setEditMsgState] = useState();
     const [open, setOpen] = useState(false);
@@ -126,7 +124,7 @@ const AddMessage = () => {
             renderCell: (params) => (
                 <div className="flex flex-row gap-4 justify-between">
                     {/* <div> */}
-                    <MyToolTip style={'bg-green-500'} content={'Edit'}>
+                    <MyToolTip styles={'bg-green-500'} content={'Edit'}>
                         <IconButton
                             onClick={() => openDrawer(params.row)}
                             // onClick={() => console.log(params)}
@@ -135,7 +133,7 @@ const AddMessage = () => {
                             <FaEdit className="h-4 w-4 text-green-600 font-extrabold" />
                         </IconButton>
                     </MyToolTip>
-                    <MyToolTip style={'bg-red-500'} content={'Delete'}>
+                    <MyToolTip styles={'bg-red-500'} content={'Delete'}>
                         <IconButton
                             onClick={() => confirmDelete(params.row.id)}
                             variant="text"
@@ -180,10 +178,13 @@ const AddMessage = () => {
                     </Button>
                 </form>
             </Drawer>
-            <div className="flex-row w-full justify-start flex">
-                <p className="px-4 py-2 bg-[#57626c] rounded-lg text-white font-bold">
-                    Add Message
-                </p>
+            <div className='flex flex-row w-full h-fit justify-between items-center'>
+                <Breadcrumbs>
+                    <BiHome size={20} className='opacity-50'/>
+                    <p className="font-poppins">
+                        Message
+                    </p>
+                </Breadcrumbs>
             </div>
             <div className="w-full px-6 py-2 h-22 border-2 border-gray-200 md:flex flex-row gap-2 items-end justify-center rounded-xl">
                 <form className="flex flex-1 xl:flex-row md:flex-col gap-2 m-2 justify-end" onSubmit={AddMsgHandler} >
@@ -213,8 +214,6 @@ const AddMessage = () => {
                             </Button>
                         </div>
                     </div>
-
-
                 </form>
             </div>
             <div className='flex flex-col w-full'>
@@ -230,15 +229,6 @@ const AddMessage = () => {
                                     },
                                 },
                             }}
-                            // onRowClick={(e, b) => {
-                            //    const checked = b.target;
-                            //    console.log(checked)
-                            //     //console.log(checked.includes("bg-green-200"))
-                            //     // if(b.target.role != null) return
-                            //     openDrawer(e.row)
-                            // }
-
-                            // }
                             pageSizeOptions={[5]}
                             checkboxSelection
                             disableRowSelectionOnClick

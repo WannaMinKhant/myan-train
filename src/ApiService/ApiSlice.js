@@ -1,17 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = 'http://192.168.8.102:8000/api/';
+const baseUrl = 'http://127.0.0.1:8000/api/v1/admin';
 
-const auth = JSON.parse(localStorage.getItem("auth"));
 
-const header = {
-    'Authorization': auth == null ? "" : `Bearer ${auth.token}`,
-    'Accept': '*/*',
-    'Content-Type': 'application/json',
-    'enctype': 'multipart/form-data',
-}
-
-const createRequest = (url) => ({ url, headers: header });
+// const createRequest = (url) => ({ url, headers: header });
 
 export const ApiSlice = createApi({
     reducerPath: 'api',
@@ -19,11 +11,11 @@ export const ApiSlice = createApi({
         baseUrl,
         prepareHeaders: (headers, { getState }) => {
             // console.log(auth)
-
+            const token = (window.localStorage.getItem("token"));
             // If we have a token set in state, let's assume that we should be passing it.
-            if (auth != null) {
-                if (auth.token) {
-                    headers.set('authorization', `Bearer ${auth.token}`)
+            if (token) {
+                if (token) {
+                    headers.set('authorization', `Bearer ${token}`)
                 }
             }
             headers.set('Accept', `Application/json`);
