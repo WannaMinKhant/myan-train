@@ -130,7 +130,6 @@ function ProfileMenu() {
 const MaterialNavBar = () => {
   const navigate = useNavigate();
   const [drawerState, setDrawerState] = useState(false);
-  const shop = JSON.parse(localStorage.getItem('shopdetails'));
   const location = useLocation()
 
   useEffect(()=>{

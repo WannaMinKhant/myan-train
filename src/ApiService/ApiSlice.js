@@ -19,8 +19,11 @@ export const ApiSlice = createApi({
                 }
             }
             headers.set('Accept', `Application/json`);
+            headers.set('enctype', `multipart/form-data`);
+
 
             //headers.set('authorization', `Bearer 123`)
+            // 'enctype':'multipart/form-data',
 
             return headers
         },

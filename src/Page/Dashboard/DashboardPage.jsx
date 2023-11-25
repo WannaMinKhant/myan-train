@@ -1,6 +1,6 @@
 import React from 'react'
 import { IoMdTrain } from 'react-icons/io';
-import Station from '../../image/station.png'
+import Station from '../../image/images.png'
 
 const DashboardPage = () => {
 
@@ -320,23 +320,20 @@ const DashboardPage = () => {
   ];
   return (
     <div className='w-full h-screen overflow-y-auto scrollbar-hide'>
-      <div className='grid lg:grid-cols-8 md:grid-cols-6 sm:grid-cols-4 font-poppins select-none gap-4'>
+      <div className='grid lg:grid-cols-7 md:grid-cols-6 sm:grid-cols-4 font-poppins select-none gap-4'>
       {
         stationList.map((station,i)=>{
           return (
             <div id={i} className='relative h-fit'>
-              <div className='p-2 bg-blue-gray-600 m-2 rounded-xl text-left shadow-md shadow-indigo-300'>
-                <div className='flex flex-row items-center justify-center pb-2'>
-                  <img src={Station} alt={"station"} width={40} height={40}/>
+              <div className={`${station.status == 1 ? "bg-green-500" : "bg-red-400"} p-2 rounded-md text-left shadow-md shadow-indigo-300`}>
+                <div className='flex flex-row items-center justify-start py-1'>
+                  <img src={Station} alt={"station"} width={30} height={30} className='bg-gray-300 rounded-full'/>
+                  <p className='ml-3 text-sm text-gray-200'>{ station.name}</p>
                 </div>
-                <p className='text-xs text-gray-200'>{ station.name}</p>
-                <div className='flex flex-row justify-between text-sm'>
-                  <p className='text-gray-500'>status</p>
-                  <p className={`${station.status == 1 ? "text-green-500" : "text-red-400"} font-poppins`}>{station.status == 1 ? "Online" : "Offline"}</p>
-                </div>
+                
               </div>
-              <div className={`absolute w-4 h-4 top-0 right-0 rounded-full ${station.status == 1 ? ' bg-green-500' : 'bg-red-500'}`}>
-                </div> 
+              {/* <div className={`absolute w-4 h-4 top-0 right-0 rounded-full ${station.status == 1 ? ' bg-green-500' : 'bg-red-500'}`}>
+                </div>  */}
             </div>
           )
         })
