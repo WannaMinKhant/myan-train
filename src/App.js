@@ -13,6 +13,7 @@ import Auth from './Page/Authentication/Auth';
 import LanePage from './Page/Lane/LanePage';
 import AdvertisePage from './Page/Advertise/AdvertisePage';
 import socketIO from 'socket.io-client';
+import TimeTable from './Page/TimeTable/TimeTable';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/marquee" element={<AddMarquee socket={socket}/>} />
         <Route path="/actionMarquee" element={<ActionMarquee  socket={socket}/>} />
         <Route path="/ads-manager" element={<AdvertisePage />} />
+        <Route path="/time-table" element={<TimeTable />} />
       </Routes>
     </Layout>
   );

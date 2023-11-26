@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Station from "../../image/images.png";
 import { useGetStationQuery } from "../../ApiService/stationSlice";
+import { Spinner } from "@material-tailwind/react";
 
 const DashboardPage = ({ socket }) => {
-  const { data, isSuccess } = useGetStationQuery();
+  const { data, isSuccess, isLoading } = useGetStationQuery();
   const [account, setAccount] = useState([]);
   const [station, setStation] = useState([]);
 
@@ -45,7 +46,7 @@ const DashboardPage = ({ socket }) => {
 
   return (
     <div className="w-full h-screen overflow-y-auto scrollbar-hide">
-      <div className="grid lg:grid-cols-7 md:grid-cols-6 sm:grid-cols-4 font-poppins select-none gap-4">
+      { isLoading ? <div className="justify-center items-center flex flex-row w-full h-full"><Spinner/></div> : <div className="grid lg:grid-cols-7 md:grid-cols-6 sm:grid-cols-4 font-poppins select-none gap-4">
         { isSuccess &&
           station?.map((station, i) => {
             return (
@@ -71,7 +72,7 @@ const DashboardPage = ({ socket }) => {
               </div>
             );
           })}
-      </div>
+      </div>}
     </div>
   );
 };

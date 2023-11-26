@@ -19,6 +19,7 @@ import Logo from "../image/images.jpeg"
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { FaSitemap  } from "react-icons/fa";
 import { ImOffice } from "react-icons/im";
+import { BsTable } from "react-icons/bs";
 import { HiDocumentReport } from 'react-icons/hi'
 import { IoMdTrain } from 'react-icons/io';
 import { MdManageAccounts,MdAltRoute  } from 'react-icons/md';
@@ -68,6 +69,12 @@ const MaterialSideBar = () => {
             accordion: []
         },
         {
+            'title': 'Time Table',
+            'icon': BsTable ,
+            'link': '/time-table',
+            accordion: []
+        },
+        {
             'title': 'Message',
             'icon': FaSitemap,
             'link': '/message',
@@ -107,12 +114,6 @@ const MaterialSideBar = () => {
         //         }
         //     ]
         // },
-        {
-            'title': 'Setting',
-            'icon': Cog6ToothIcon,
-            'link': '/setting',
-            accordion: []
-        },
         {
             'title': 'Logout',
             'icon': PowerIcon,

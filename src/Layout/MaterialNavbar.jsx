@@ -134,8 +134,6 @@ const MaterialNavBar = () => {
     const auth = window.localStorage.getItem('token');
     if(!auth){
       navigate("/login");
-    }else{
-      navigate("/dashboard");
     }
   },[location])
 
