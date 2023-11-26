@@ -122,7 +122,7 @@ const MaterialSideBar = () => {
     ];
 
     return (
-        <div className="w-12 md:w-80 md:block hidden h-full p-4 font-poppins z-30">
+        <div className="w-12 md:w-[250px] md:block h-full font-poppins z-30">
             <Card className="w-full h-full max-w-[20rem] shadow-xl shadow-white-900/5 bg-[#1b2c3e]">
                 <List className="text-white">
                     <ListItem className="p-3 group">

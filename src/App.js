@@ -12,21 +12,25 @@ import StationAccount from './Page/Station/StationAccount';
 import Auth from './Page/Authentication/Auth';
 import LanePage from './Page/Lane/LanePage';
 import AdvertisePage from './Page/Advertise/AdvertisePage';
+import socketIO from 'socket.io-client';
 
 function App() {
+
+  const socket = socketIO.connect('http://localhost:3500')
+
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<Auth/>}/>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage/>} />
+        <Route path="/dashboard" element={<DashboardPage socket={socket}/>} />
         <Route path="/train" element={<AddTrain />} />
         <Route path="/lane" element={<LanePage />} />
         <Route path="/station" element={<AddStation />} />
         <Route path="/station-account" element={<StationAccount />} />
         <Route path="/message" element={<AddMessage />} />
-        <Route path="/marquee" element={<AddMarquee />} />
-        <Route path="/actionMarquee" element={<ActionMarquee />} />
+        <Route path="/marquee" element={<AddMarquee socket={socket}/>} />
+        <Route path="/actionMarquee" element={<ActionMarquee  socket={socket}/>} />
         <Route path="/ads-manager" element={<AdvertisePage />} />
       </Routes>
     </Layout>

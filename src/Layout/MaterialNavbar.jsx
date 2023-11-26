@@ -45,10 +45,7 @@ const profileMenuItems = [
 function ProfileMenu() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const auth = localStorage.getItem('auth');
-  if(!auth){
-    navigate("/login");
-  }
+
 //   const [ logout, result] = useLogOutMutation();
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -134,9 +131,11 @@ const MaterialNavBar = () => {
 
   useEffect(()=>{
     setDrawerState(false)
-    const auth = localStorage.getItem('auth');
+    const auth = window.localStorage.getItem('token');
     if(!auth){
       navigate("/login");
+    }else{
+      navigate("/dashboard");
     }
   },[location])
 

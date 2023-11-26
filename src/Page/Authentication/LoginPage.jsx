@@ -44,6 +44,8 @@ const LoginPage = () => {
     const auth = localStorage.getItem("auth");
     if (!auth) {
       navigate("/login");
+    }else{
+      navigate("/dashboard");
     }
   }, []);
 
@@ -88,7 +90,7 @@ const LoginPage = () => {
       className="flex flex-col w-full h-screen justify-center items-center bg-no-repeat bg-cover relative z-10 bg-gray-100 bg-opacity-20"
       style={{ backgroundImage: "url(" + bg + ")", }}
     >
-      <div className="mx-auto my-auto w-1/4 text-center bg-gray-200 py-4 rounded-xl absolute z-20">
+      <div className="mx-auto my-auto flex flex-col text-center bg-gray-200 py-4 rounded-xl absolute z-20 items-center px-6">
         <img
           src={logo}
           alt=""

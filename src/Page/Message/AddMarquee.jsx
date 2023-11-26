@@ -9,7 +9,6 @@ import {
 } from '../../ApiService/messageSlice'
 import {
   useAddMarqueeMutation,
-  useDeleteMarqueeMutation
 } from '../../ApiService/marQueeSlice';
 import {
   useGetMarqueeQuery
@@ -25,9 +24,7 @@ import { BiHome } from "react-icons/bi";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-const label = { inputProps: { 'aria-label': 'Checkbox demo' }};
-
-const AddMarquee = () => {
+const AddMarquee = ({socket}) => {
   const { data, isLoading, isSuccess, refetch } = useGetMessageQuery();
 
   let selectList = [];
@@ -40,6 +37,10 @@ const AddMarquee = () => {
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
+
+  const notify=()=>{
+    socket?.emit('notify','noti')
+  }
 
   const [messageId,setMessageID] = useState(0);
   const [loading, setLoading] = useState(true)
@@ -76,7 +77,7 @@ const AddMarquee = () => {
     }
     await addMarQuee(body);
     getMarqueeAction();
-
+    notify();
   }
 
   useEffect(() => {

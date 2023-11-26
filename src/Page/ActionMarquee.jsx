@@ -14,7 +14,7 @@ import {
 import { Breadcrumbs } from "@material-tailwind/react";
 import { BiHome } from "react-icons/bi";
 
-const ActionMarquee = () => {
+const ActionMarquee = ({socket}) => {
     const { data, isLoading, isSuccess, refetch } = useGetMarqueeQuery();
     const [deleteMarquee] = useDeleteMarqueeMutation();
 
@@ -35,10 +35,18 @@ const ActionMarquee = () => {
             }
         });
     };
+
+    // for real time socket connection
+  const notify=()=>{
+    socket?.emit('notify','noti')
+  }
+
+
     const deleteMarqueeHandler = async (id) => {
         console.log(id)
         await deleteMarquee(id);
         refetch();
+        notify();
     }
     const header = [
         {
