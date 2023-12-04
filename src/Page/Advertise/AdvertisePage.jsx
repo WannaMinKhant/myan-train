@@ -59,6 +59,7 @@ const AdvertisePage = () => {
     }
     setOpenAlert(false);
   };
+
   const handleClick = () => {
     setOpenAlert(true);
   };
@@ -79,6 +80,7 @@ const AdvertisePage = () => {
   let formData = new FormData();
 
   const AddAdsServer = async () => {
+    
     formData.append("title", titleRef.current.value);
     formData.append("body", MsgBody);
     formData.append("file", selectedFiles);
