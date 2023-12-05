@@ -69,6 +69,12 @@ const MaterialSideBar = () => {
             accordion: []
         },
         {
+            'title': 'Station Time',
+            'icon': BsTable ,
+            'link': '/time-duration',
+            accordion: []
+        },
+        {
             'title': 'Time Table',
             'icon': BsTable ,
             'link': '/time-table',

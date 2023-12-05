@@ -13,6 +13,20 @@ export const TimeTableSlice = ApiSlice.injectEndpoints({
                 body,
             }),
         }),
+        getLaneStation: builder.mutation({
+            query: (body) => ({
+                url: '/lane-station',
+                method: 'POST',
+                body,
+            }),
+        }),
+        addLaneStation: builder.mutation({
+            query: (body) => ({
+                url: '/time-duration',
+                method: 'POST',
+                body,
+            }),
+        }),
         editTimeTable: builder.mutation({
             query: (body) => ({
                 url: `/time-table/${body.id}`,
@@ -25,7 +39,7 @@ export const TimeTableSlice = ApiSlice.injectEndpoints({
                 url: `/time-table/${id}`,
                 method: 'DELETE',
             })
-        })
+        }),
     })
 });
 
@@ -34,4 +48,6 @@ export const {
     useAddTimeTableMutation,
     useEditTimeTableMutation,
     useDeleteTimeTableMutation,
+    useGetLaneStationMutation,
+    useAddLaneStationMutation,
 } = TimeTableSlice

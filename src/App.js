@@ -14,6 +14,7 @@ import LanePage from './Page/Lane/LanePage';
 import AdvertisePage from './Page/Advertise/AdvertisePage';
 import socketIO from 'socket.io-client';
 import TimeTable from './Page/TimeTable/TimeTable';
+import StationDepature from './Page/StationDepature/StationDepature';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/actionMarquee" element={<ActionMarquee  socket={socket}/>} />
         <Route path="/ads-manager" element={<AdvertisePage />} />
         <Route path="/time-table" element={<TimeTable />} />
+        <Route path="/time-duration" element={<StationDepature />} />
       </Routes>
     </Layout>
   );
