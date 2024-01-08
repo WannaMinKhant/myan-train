@@ -177,7 +177,7 @@ const TimeTable = () => {
       </div>
       <div className="flex md:flex-row lg:flex-row xl:flex-row  flex-col w-full mt-4">
         <div className="flex-1 h-full order-2">
-          <Box sx={{ height: 400, width: "100%" }}>
+          <Box sx={{ height: 500, width: "100%" }}>
             {isSuccess ? (
               <DataGrid
                 rows={data?.data}

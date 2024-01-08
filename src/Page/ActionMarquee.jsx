@@ -113,7 +113,7 @@ const ActionMarquee = ({socket}) => {
                 <p className="font-poppins">Manage Announce</p>
                 </Breadcrumbs>
             </div>
-            <Box sx={{ height: 400, width: '100%' }}>
+            <Box sx={{ height: 500, width: '100%' }}>
                 {isSuccess ?
                     <DataGrid
                         rows={lstMessage}
@@ -121,11 +121,12 @@ const ActionMarquee = ({socket}) => {
                         initialState={{
                             pagination: {
                                 paginationModel: {
-                                    pageSize: 5,
+                                    pageSize: 10,
                                 },
                             },
                         }}
-                        pageSizeOptions={[5]}
+                        density='compact'
+                        pageSizeOptions={[5,10,25,50,100]}
                         checkboxSelection
                         disableRowSelectionOnClick
                         slots={{ toolbar: GridToolbar }}

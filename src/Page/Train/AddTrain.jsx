@@ -115,19 +115,19 @@ const AddTrain = () => {
         {
             field: 'train_no',
             headerName: 'ရထား',
-            width: 200,
+            width: 100,
             editable: false,
         },
         {
             field: 'eng_train_no',
             headerName: 'Train',
-            width: 200,
+            width: 100,
             editable: false,
         },
         {
             field: 'category_id',
             headerName: 'Way',
-            flex: 1,
+            width: 150,
             editable: false,
             renderCell: (params) => (
                 <p>
@@ -138,7 +138,7 @@ const AddTrain = () => {
         {
             field: 'lane_id',
             headerName: 'Lane',
-            width: 200,
+           flex:1,
             editable: false,
             renderCell: (params) => (
                 <p>
@@ -149,7 +149,7 @@ const AddTrain = () => {
         {
             field: 'action',
             headerName: 'Action',
-            flex: 1,
+            width:150,
             renderCell: (params) => (
                 <div className="flex flex-row gap-4 justify-between">
                     {/* <div> */}
