@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { Select, Option } from "@material-tailwind/react";
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
@@ -34,6 +34,7 @@ const AddTrain = () => {
     const edittrainRef = useRef();
     const edittrainEngRef = useRef();
     const [cateValue, setCateValue] = useState()
+    const [laneValue,setLaneValue] = useState()
 
     const [editTrainState, setEditTrainState] = useState();
     const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const AddTrain = () => {
     const { data, isLoading, isSuccess, refetch } = useGetTrainQuery();
     const [addTrain, addTrainResult] = useAddTrainMutation();
     const [editTrain, editTrainResult] = useEditTrainMutation();
-    const [deleteTrain, deleteTrainesult] = useDeleteTrainMutation();
+    const [deleteTrain] = useDeleteTrainMutation();
 
     const openDrawer = (e) => {
         console.log(e);
@@ -60,7 +61,7 @@ const AddTrain = () => {
             category_id: cateValue,
             train_no: trainRef.current.value,
             eng_train_no: trainEngRef.current.value,
-            lane_id: 1,
+            lane_id: laneValue,
             status: "0",
             note: "0"
         }
@@ -108,14 +109,13 @@ const AddTrain = () => {
         });
     };
 
-    const lane = [];
 
     const header = [
 
         {
             field: 'train_no',
             headerName: 'ရထား',
-            width: 100,
+            width: 200,
             editable: false,
         },
         {
@@ -131,7 +131,7 @@ const AddTrain = () => {
             editable: false,
             renderCell: (params) => (
                 <p>
-                    { params.category_id == 1 ? "အမြန်ရထား" : "မြို့ပတ်ရထား"}
+                    { params.row.category_id == 2 ? "အမြန်ရထား" : "မြို့ပတ်ရထား"}
                 </p>
             )
         },
@@ -233,9 +233,20 @@ const AddTrain = () => {
                     />
                     <div className="w-72">
                         <Select label="Select Way" onChange={(e) => setCateValue(e)} >
-                            <Option value='1'>Circular Train</Option>
-                            <Option value='2'>Express Train</Option>
+                            <Option value='1'>မြို့ပတ်ရထား</Option>
+                            <Option value='2'>အမြန်ရထား</Option>
                         </Select>
+                    </div>
+                    <div className="w-full md:w-96 lg:w-96">
+                    <Select label="Select Lane" onChange={(e) => setLaneValue(e)} >
+                        {
+                           laneSuccess ? LaneList.data.map((lane)=>(
+                            <Option value={lane.id}>{lane.name}</Option>
+                            ))  : <Option value={"0"}>{"Select Lane"}</Option>
+                        }
+
+                           
+                    </Select>
                     </div>
                     <div className="flex-none">
                         <Button

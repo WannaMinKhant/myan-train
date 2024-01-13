@@ -114,13 +114,12 @@ const AddMessage = () => {
         {
             field: 'description',
             headerName: 'Description',
-            width: 400,
-            editable: true,
+            flex:1,
         },
         {
             field: 'action',
             headerName: 'Action',
-            flex: 1,
+            width: 130,
             renderCell: (params) => (
                 <div className="flex flex-row gap-4 justify-between">
                     {/* <div> */}
@@ -230,8 +229,8 @@ const AddMessage = () => {
                                 },
                             }}
                             density='compact'
-                        pageSizeOptions={[5,10,25,50,100]}
-                            checkboxSelection
+                            pageSizeOptions={[5,10,25,50,100]}
+                            // checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}
                             showCellVerticalBorder

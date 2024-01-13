@@ -304,6 +304,7 @@ const AddStation = () => {
                                     },
                                 },
                             }}
+                            
                             // onRowClick={(e, b) => {
                             //    const checked = b.target;
                             //    console.log(checked)
@@ -313,7 +314,8 @@ const AddStation = () => {
                             // }
 
                             // }
-                            pageSizeOptions={[5]}
+                            density='compact'
+                            pageSizeOptions={[5,10,25,50,100]}
                             checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}

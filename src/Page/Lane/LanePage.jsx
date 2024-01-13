@@ -16,6 +16,10 @@ import {
   Spinner,
   Drawer,
   Typography,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -43,6 +47,10 @@ const LanePage = () => {
   const editFromRef = useRef();
   const editToRef = useRef();
 
+  const [openDialog, setOpenDialog] = useState(false);
+ 
+  const handleOpen = () => setOpen(!open);
+
   //Drawer
   const [open, setOpen] = useState(false);
   const openDrawer = (e) => {
@@ -69,7 +77,6 @@ const LanePage = () => {
   };
 
 
-
   const header = [
     {
       field: "name",
@@ -79,17 +86,17 @@ const LanePage = () => {
     {
       field: "from",
       headerName: "From",
-      flex: 1,
+      width: 150,
     },
     {
       field: "to",
       headerName: "To",
-      flex: 1,
+      width: 150,
     },
     {
       field: "rotation",
       headerName: "လမ်းကြောင်း",
-      flex: 1,
+      width: 150,
       renderCell:(params) => (
         <p>
             { params.row.rotation != 1 ? params.row.rotation == 0 ? "လမ်းကြောင်းပြည့်" : "လက်ယာရစ်" : "လက်ဝဲရစ်"}
@@ -100,7 +107,6 @@ const LanePage = () => {
       field: "action",
       headerName: "Action",
       width: 100,
-      flex: 1,
       renderCell: (params) => (
         <div className="flex flex-row gap-4 justify-between">
           {/* <div> */}
@@ -271,7 +277,7 @@ const LanePage = () => {
       </div>
       <div className="flex md:flex-row lg:flex-row xl:flex-row  flex-col w-full mt-4">
         <div className="flex-1 h-full order-2">
-          <Box sx={{ height: 400, width: "100%" }}>
+          <Box sx={{ height: 500, width: "100%" }}>
             {isSuccess ? (
               <DataGrid
                 rows={data?.data}
@@ -283,7 +289,7 @@ const LanePage = () => {
                     },
                   },
                 }}
-                pageSizeOptions={[5]}
+                pageSizeOptions={[5,10,25,50,100]}
                 // checkboxSelection
                 disableRowSelectionOnClick
                 slots={{ toolbar: GridToolbar }}
@@ -301,7 +307,7 @@ const LanePage = () => {
             )}
           </Box>
         </div>
-        <div className="flex flex-col md:w-1/3 lg:w-1/3 xl:w-1/3 w-full p-2 border-2 mx-2 rounded-xl order-1">
+        <div className="flex flex-col md:w-1/4 lg:w-1/4 xl:w-1/4 w-full p-2 border-2 mx-2 rounded-xl order-1">
           <div className="flex flex-1 xl:flex-col md:flex-col flex-col gap-2 m-2">
             <Input
               type="text"
@@ -335,6 +341,43 @@ const LanePage = () => {
                 </Option>
               </Select>
             </div>
+            {/* <button
+              className="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              type="button"
+              onClick={setOpenDialog}
+            >
+              Select Station
+            </button>
+            <Dialog
+              open={openDialog}
+              handler={setOpenDialog}
+              animate={{
+                mount: { scale: 1, y: 0 },
+                unmount: { scale: 0.9, y: -100 },
+              }}
+            >
+              <DialogHeader>Its a simple dialog.</DialogHeader>
+              <DialogBody>
+                The key to more success is to have a lot of pillows. Put it this way,
+                it took me twenty five years to get these plants, twenty five years of
+                blood sweat and tears, and I&apos;m never giving up, I&apos;m just
+                getting started. I&apos;m up to something. Fan luv.
+              </DialogBody>
+              <DialogFooter>
+                <Button
+                  variant="text"
+                  color="red"
+                  onClick={setOpenDialog}
+                  className="mr-1"
+                >
+                  <span>Cancel</span>
+                </Button>
+                <Button variant="gradient" color="green" onClick={handleOpen}>
+                  <span>Confirm</span>
+                </Button>
+              </DialogFooter>
+            </Dialog> */}
+
             <div className="flex-row flex justify-end">
               {addLaneResutl.isLoading ? (
                 <Button

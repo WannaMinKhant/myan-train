@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { BiTrash, BiHome } from "react-icons/bi";
-import AlertComponent from "../../Components/AlertComponent";
+// import AlertComponent from "../../Components/AlertComponent";
 import MyToolTip from "../../Components/MyToolTip";
 import Box from "@mui/material/Box";
 import { v4 as uuidv4 } from "uuid";
 import { Select, Option } from "@material-tailwind/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { FaEdit } from "react-icons/fa";
+// import { XMarkIcon } from "@heroicons/react/24/outline";
+// import { FaEdit } from "react-icons/fa";
 import { IoAddCircleOutline } from "react-icons/io5";
 import {
   Button,
-  Input,
+  // Input,
   IconButton,
   Spinner,
-  Drawer,
-  Typography,
+  // Drawer,
+  // Typography,
 } from "@material-tailwind/react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
@@ -32,6 +32,7 @@ import {
 } from "../../ApiService/TimeTableSlice";
 import { useGetTrainQuery } from "../../ApiService/trainSlice";
 import { useGetStationQuery } from "../../ApiService/stationSlice";
+import { useGetLaneQuery } from '../../ApiService/laneSlice';
 
 const TimeTable = () => {
   const { data, isSuccess, isLoading, refetch } = useGetTimeTableQuery();
@@ -47,21 +48,25 @@ const TimeTable = () => {
   } = useGetStationQuery();
 
   const [addTimeTable, addTimeTableResult] = useAddTimeTableMutation();
-  const [delTimeTable, deleteTimeTableResult] = useDeleteTimeTableMutation();
+  const [delTimeTable] = useDeleteTimeTableMutation();
+
+  const {data:LaneList,isSuccess:laneSuccess} = useGetLaneQuery();
 
   const [FromstationId, setFromStationId] = useState();
   const [TostationId, setToStationId] = useState();
   const [trainId, setTrainId] = useState();
   const [lane, setLane] = useState();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+
+  const [cateValue, setCateValue] = useState()
 
   const toTimeRef = useRef();
   const fromTimeRef = useRef();
 
-  const openDrawer = async (e) => {
-    await setOpen(true);
-  };
-  const closeDrawer = () => setOpen(false);
+  // const openDrawer = async (e) => {
+  //   await setOpen(true);
+  // };
+  // const closeDrawer = () => setOpen(false);
 
   const confirmDelete = (id) => {
     Swal.fire({
@@ -116,11 +121,10 @@ const TimeTable = () => {
       flex: 1,
       renderCell: (params) => (
         <p>
-          {params.row.note == 0
-            ? "လမ်းကြောင်းအပြည့်"
-            : params.row.note == 1
-            ? "လက်ဝဲရစ်"
-            : "လက်ယာရစ်"}
+          {params.row.category_id == 2
+            ? "အမြန်ရထား"
+            :"မြို့ပတ်ရထား"
+           }
         </p>
       ),
     },
@@ -154,7 +158,7 @@ const TimeTable = () => {
       totime: toTimeRef.current.value,
       to_station_id: TostationId,
       note: lane,
-      category_id: 2,
+      category_id: cateValue,
     };
     console.log(body);
 
@@ -272,18 +276,23 @@ const TimeTable = () => {
               </LocalizationProvider>
 
               <div className="w-full">
-                <Select label="Select Lane" onChange={(e) => setLane(e)}>
-                  <Option value="0" key={uuidv4()}>
-                    လမ်းကြောင်းအပြည့်
-                  </Option>
-                  <Option value="1" key={uuidv4()}>
-                    လက်ဝဲရစ်
-                  </Option>
-                  <Option value="2" key={uuidv4()}>
-                    လက်ယာရစ်
-                  </Option>
-                </Select>
+                        <Select label="Select Way" onChange={(e) => setCateValue(e)} >
+                            <Option value='1'>မြို့ပတ်ရထား</Option>
+                            <Option value='2'>အမြန်ရထား</Option>
+                        </Select>
               </div>
+              <div className="w-full">
+                    <Select label="Select Way" onChange={(e) => setLane(e)} >
+                        {
+                           laneSuccess ? LaneList.data.map((lane)=>(
+                            <Option value={lane.id}>{lane.name}</Option>
+                            ))  : <Option value={"0"}>{"Select Lane"}</Option>
+                        }
+
+                           
+                    </Select>
+              </div>
+                    
               {/* <div className="flex-row flex justify-end">
               {addLaneResutl.isLoading ? (
                 <Button
