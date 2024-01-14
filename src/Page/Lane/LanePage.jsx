@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Select, Option } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FaEdit } from "react-icons/fa";
+import { BsFillArrowRightCircleFill } from "react-icons/bs";
+import { MdOutlineRemoveCircle } from "react-icons/md";
 import {
   Button,
   Input,
@@ -30,6 +32,7 @@ import {
   useEditLaneMutation,
   useDeleteLaneMutation,
 } from "../../ApiService/laneSlice";
+import { useGetStationQuery } from "../../ApiService/stationSlice";
 
 const LanePage = () => {
   const { data, isSuccess, isLoading, refetch } = useGetLaneQuery();
@@ -48,8 +51,26 @@ const LanePage = () => {
   const editToRef = useRef();
 
   const [openDialog, setOpenDialog] = useState(false);
- 
-  const handleOpen = () => setOpen(!open);
+
+  const {
+    data: station,
+    isLoading: stationLoading,
+    isSuccess: stationSuccess,
+  } = useGetStationQuery();
+  
+
+  const [newStation,setNewStation] = useState([]);
+
+  const closeDialog = () =>{
+    setOpenDialog(false);
+    setNewStation([]);
+  }
+
+  const confirmStation = () =>{
+    setOpenDialog(false);
+    let lstStation = newStation.map((st) => st.id)
+    console.log(lstStation);
+  }
 
   //Drawer
   const [open, setOpen] = useState(false);
@@ -75,6 +96,8 @@ const LanePage = () => {
   const handleClick = () => {
     setOpenAlert(true);
   };
+
+
 
 
   const header = [
@@ -133,13 +156,14 @@ const LanePage = () => {
   ];
 
   const AddLane = async () => {
+    let lstStation = newStation.map((st) => st.id)
     const body = {
         name: nameRef.current.value,
         from: fromRef.current.value,
         to: toRef.current.value,
         rotation: stationId,
         status:0,
-        note:0,
+        note:lstStation,
     }
 
     await addlane(body);
@@ -148,6 +172,7 @@ const LanePage = () => {
     fromRef.current.value = "";
     toRef.current.value = "";
     setStationId(0);
+    setNewStation([]);
   };
 
   const editLaneHandler = async () => {
@@ -187,6 +212,18 @@ const LanePage = () => {
     });
   };
 
+  const addToNewItem = (stat) => {
+    console.log(stat)
+
+    let exists = newStation.some((st)=> st.id === stat.id);
+    if(exists) return;
+    setNewStation([...newStation,stat]);
+  }
+
+  const removeItem = (stat) => {
+    setNewStation([...newStation.filter((item) => item.id !== stat.id)]);
+  };
+
   useEffect(()=>{
     if(addLaneResutl.isSuccess){
         setAlertResult(addLaneResutl);
@@ -218,6 +255,8 @@ const LanePage = () => {
       handleClick();
     }
   },[delLaneResult])
+
+
 
 
   return (
@@ -341,42 +380,69 @@ const LanePage = () => {
                 </Option>
               </Select>
             </div>
-            {/* <button
+            <button
               className="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="button"
               onClick={setOpenDialog}
             >
-              Select Station
+              Select Lane
             </button>
             <Dialog
               open={openDialog}
-              handler={setOpenDialog}
+              handler={closeDialog}
               animate={{
                 mount: { scale: 1, y: 0 },
                 unmount: { scale: 0.9, y: -100 },
               }}
             >
-              <DialogHeader>Its a simple dialog.</DialogHeader>
+              <DialogHeader>လမ်းကြောင်းရှိ ဘူတာများ ထည့်သွင်းရန်</DialogHeader>
               <DialogBody>
-                The key to more success is to have a lot of pillows. Put it this way,
-                it took me twenty five years to get these plants, twenty five years of
-                blood sweat and tears, and I&apos;m never giving up, I&apos;m just
-                getting started. I&apos;m up to something. Fan luv.
+                <div className="flex flex-row w-full  h-96 select-none">
+                  <div className="flex flex-col w-1/2 p-2 overflow-y-auto text-xs">
+                    {
+                      stationSuccess && station.data.map((stat,i)=>
+                        <div className="flex justify-between items-center border-2 p-2 mt-1 rounded-md flex-row hover:bg-blue-200" key={i.toString()} >
+                          <div>
+                            {stat.name} 
+                          </div>
+                          <div className=" cursor-pointer" onClick={()=>addToNewItem(stat)}>
+                            <BsFillArrowRightCircleFill color="green" size={20}/>
+                          </div>
+                         
+                        </div>
+                      )
+                    }
+                  </div>
+                  <div className="flex flex-col w-1/2 p-2 h-full overflow-y-auto text-xs ">
+                  {
+                    newStation.length > 0 &&  newStation.map((stat,i)=>
+                        <div className="flex justify-between item-center border-2 p-2 mt-1 rounded-md flex-row hover:bg-green-200" key={i.toString()} >
+                          <div className="">
+                            {stat.name} 
+                          </div>
+                          <div className="cursor-pointer" onClick={()=>removeItem(stat)}>
+                           <MdOutlineRemoveCircle color="red" size={20}/>
+                          </div>
+                        </div>
+                      )
+                    }
+                  </div>
+                </div>
               </DialogBody>
               <DialogFooter>
                 <Button
                   variant="text"
                   color="red"
-                  onClick={setOpenDialog}
+                  onClick={closeDialog}
                   className="mr-1"
                 >
                   <span>Cancel</span>
                 </Button>
-                <Button variant="gradient" color="green" onClick={handleOpen}>
+                <Button variant="gradient" color="green" onClick={confirmStation}>
                   <span>Confirm</span>
                 </Button>
               </DialogFooter>
-            </Dialog> */}
+            </Dialog>
 
             <div className="flex-row flex justify-end">
               {addLaneResutl.isLoading ? (
