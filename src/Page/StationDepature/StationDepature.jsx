@@ -108,6 +108,8 @@ const StationDepature = () => {
 
   const addStationTimeTable = async()=>{
 
+    let empty = 0;
+
     for(let i=0; i < TimeStation.length; i++) {
       if( fromRef.current[i].value == "" || toRef.current[i].value == ""){
         setResult({
@@ -118,11 +120,13 @@ const StationDepature = () => {
           msg:"Please Enter all station time"
         });
         handleClick();
+        empty = 1;
       }
     }
 
+    if(empty == 1) return;
+
     const lstStationTime = TimeStation.map((station,i)=>{
-       
                 return {
                   station_id: station.id,
                   train_id: trainId,
