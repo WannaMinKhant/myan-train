@@ -6,7 +6,6 @@ import AlertComponent from "../../Components/AlertComponent";
 import MyToolTip from "../../Components/MyToolTip";
 import Box from "@mui/material/Box";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { FaEdit } from "react-icons/fa";
 import { Textarea } from "@material-tailwind/react";
 import "video-react/dist/video-react.css";
 import { Player } from "video-react";
@@ -31,7 +30,7 @@ import {
 const AdvertisePage = () => {
   const { data, isSuccess, isLoading, refetch } = useGetAdsQuery();
   const [addAds, addAdsResult] = useAddAdsMutation();
-  const [delAds, delAdsResult] = useDeleteAdsMutation();
+  const [delAds] = useDeleteAdsMutation();
 
   const titleRef = useRef();
   const [MsgBody, setMsgBody] = useState("");
@@ -51,7 +50,7 @@ const AdvertisePage = () => {
   const closeDrawer = () => setOpen(false);
 
   // alert box
-  const [alertResult, setAlertResult] = useState(false);
+  const [alertResult] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -60,9 +59,6 @@ const AdvertisePage = () => {
     setOpenAlert(false);
   };
 
-  const handleClick = () => {
-    setOpenAlert(true);
-  };
 
   const handleClickUpload = () => {
     ref.current?.click();
@@ -186,8 +182,8 @@ const AdvertisePage = () => {
           <p className="font-poppins">Manage Ads</p>
         </Breadcrumbs>
       </div>
-      <div className="flex md:flex-row lg:flex-row xl:flex-row  flex-col w-full mt-4">
-        <div className="flex-1 h-full order-2">
+      <div className="flex flex-row w-full mt-4">
+        <div className="flex-row h-full w-2/3 order-2">
           <Box sx={{ height: 500, width: "100%" }}>
             {isSuccess ? (
               <DataGrid
@@ -215,12 +211,12 @@ const AdvertisePage = () => {
                 loading={isLoading ? true : false}
               />
             ) : (
-              <></>
+              <><Spinner/></>
             )}
           </Box>
         </div>
         <div className="flex flex-col md:w-1/3 lg:w-1/3 xl:w-1/3 w-full p-2 border-2 mx-2 rounded-xl order-1">
-          <div className="flex flex-1 xl:flex-col md:flex-col flex-col gap-2 m-2">
+          <div className="flex flex-col gap-2 m-2">
             <Input
               type="text"
               label="Title"

@@ -14,7 +14,7 @@ import { useGetAllLaneStationQuery, useDeleteLaneStationMutation } from "../../A
 const StationDepatureList = () => {
 
     const { data, isSuccess, isLoading, refetch} = useGetAllLaneStationQuery();
-    const [deleteLaneStation, result] = useDeleteLaneStationMutation();
+    const [deleteLaneStation] = useDeleteLaneStationMutation();
 
     const [ presentLane, setPresentLane] = useState([]);
 
@@ -111,7 +111,7 @@ const StationDepatureList = () => {
         <p className="font-poppins">Station Time List</p>
       </Breadcrumbs>
     </div>
-    <div className='mt-4 justify-center items-center w-full h-full flex flex-row'>
+    <div className='mt-2 justify-center items-center w-full h-full flex flex-row'>
         <Box sx={{ height: 500, width: '100%'}}>
             {isSuccess ?
                 <DataGrid
