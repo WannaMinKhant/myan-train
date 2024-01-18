@@ -15,6 +15,7 @@ import AdvertisePage from './Page/Advertise/AdvertisePage';
 import socketIO from 'socket.io-client';
 import TimeTable from './Page/TimeTable/TimeTable';
 import StationDepature from './Page/StationDepature/StationDepature';
+import StationDepatureList from './Page/StationDepature/StationDepatureList';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/ads-manager" element={<AdvertisePage />} />
         <Route path="/time-table" element={<TimeTable />} />
         <Route path="/time-duration" element={<StationDepature />} />
+        <Route path="/time-duration-all" element={<StationDepatureList />} />
       </Routes>
     </Layout>
   );

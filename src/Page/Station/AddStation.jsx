@@ -1,6 +1,5 @@
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Select, Option } from "@material-tailwind/react";
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -292,7 +291,7 @@ const AddStation = () => {
                 </form>
             </div>
             <div className='flex flex-col w-full'>
-                <Box sx={{ height: 400, width: '100%' }}>
+                <Box sx={{ height: 500, width: '100%' }}>
                     {isSuccess ?
                         <DataGrid
                             rows={data?.data}

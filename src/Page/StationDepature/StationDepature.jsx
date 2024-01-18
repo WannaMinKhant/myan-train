@@ -1,15 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { BiTrash, BiHome } from "react-icons/bi";
+import { BiHome } from "react-icons/bi";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { v4 as uuidv4 } from "uuid";
-import { FaCheck } from "react-icons/fa";
 import {
   Button,
-  Input,
-  IconButton,
   Spinner,
-  Drawer,
-  Typography,
 } from "@material-tailwind/react";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { Select, Option } from "@material-tailwind/react";

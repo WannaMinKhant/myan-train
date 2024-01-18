@@ -12,7 +12,6 @@ import {
 } from "@material-tailwind/react";
 import {
     PresentationChartBarIcon,
-    Cog6ToothIcon,
     PowerIcon,
 } from "@heroicons/react/24/solid";
 import Logo from "../image/images.jpeg"
@@ -25,7 +24,7 @@ import { IoMdTrain } from 'react-icons/io';
 import { MdManageAccounts,MdAltRoute  } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { TfiAnnouncement } from "react-icons/tfi";
-
+import { FaListUl } from "react-icons/fa";
 
 const MaterialSideBar = () => {
     const [open, setOpen] = useState(0);
@@ -72,6 +71,12 @@ const MaterialSideBar = () => {
             'title': 'Station Time',
             'icon': BsTable ,
             'link': '/time-duration',
+            accordion: []
+        },
+        {
+            'title': 'Station Time List',
+            'icon': FaListUl ,
+            'link': '/time-duration-all',
             accordion: []
         },
         {

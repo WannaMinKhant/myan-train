@@ -1,5 +1,4 @@
 import React,{ useState, useEffect, useRef } from 'react'
-import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { BiTrash, BiHome } from "react-icons/bi";
