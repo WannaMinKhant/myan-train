@@ -41,7 +41,6 @@ const ActionMarquee = ({socket}) => {
     socket?.emit('notify','noti')
   }
 
-
     const deleteMarqueeHandler = async (id) => {
         console.log(id)
         await deleteMarquee(id);

@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../../image/images.jpeg";
-import bg from "../../image/3.jpg";
+import React,{ useRef,useState, useEffect } from 'react'
+import { useUpdatePasswordMutation } from '../../ApiService/authApiSlice'
+import { Breadcrumbs } from "@material-tailwind/react";
+import { BiHome } from "react-icons/bi";
 
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -12,92 +12,80 @@ import TextField from "@mui/material/TextField";
 import {
   MdVisibility,
   MdVisibilityOff,
-  MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
 import Button from "@mui/material/Button";
-import { useLoginMutation } from "../../ApiService/authApiSlice";
 import { Spinner } from "@material-tailwind/react";
 import AlertComponent from "../../Components/AlertComponent";
 
-const LoginPage = () => {
-  const navigate = useNavigate();
 
-  const [login, result] = useLoginMutation();
-
-  const nameRef = useRef("");
-  const passwordRef = useRef("");
-
-  const [open, setOpen] = useState(false);
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  useEffect(() => {
-    const auth = localStorage.getItem("auth");
-    if (!auth) {
-      navigate("/login");
-    }else{
-      navigate("/dashboard");
-    }
-  }, []);
-
-  const checkAuth = async () => {
-    const auth = {
-      name: nameRef.current.value,
-      password: passwordRef.current.value,
-      iv: "passenger-informations-system",
-      station_id: "0",
-      role_id: "1",
-    };
-
-    // console.log(auth)
-    await login(auth);
-  };
-
-  useEffect(() => {
-    if (result.isSuccess) {
-      console.log(result);
-      localStorage.setItem("token", result.data.token);
-      localStorage.setItem("user", JSON.stringify(result.data.data));
-      localStorage.setItem("auth", 1);
-      handleClick();
-      navigate("/dashboard");
-    } else if (result.isError) {
-      handleClick();
-      console.log(result);
-    }
-    // console.log('response login')
-  }, [result]);
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
+const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+const Account = () => {
+
+    const nameRef = useRef('');
+    const passwordRef = useRef('');
+    const [updateAccount, result ] = useUpdatePasswordMutation();
+
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const updatePassword = async () => {
+        const auth = {
+            id:user.id,
+          name: user.name,
+          password: passwordRef.current.value,
+          iv: "passenger-informations-system",
+          station_id: user.station_id,
+          role_id: user.role_id,
+        };
+    
+        console.log(auth)
+        // await passwordRef(auth);
+        await updateAccount(auth)
+      };
+      const [showPassword, setShowPassword] = useState(false);
+
+      const handleClickShowPassword = () => setShowPassword((show) => !show);
+      const [open, setOpen] = useState(false);
+
+      const handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+          return;
+        }
+        setOpen(false);
+      };
+    
+      const handleClick = () => {
+        setOpen(true);
+      };
+      useEffect(() => {
+        if (result.isSuccess) {
+          console.log(result);
+        //   localStorage.setItem("token", result.data.token);
+        //   localStorage.setItem("user", JSON.stringify(result.data.data));
+        //   localStorage.setItem("auth", 1);
+          handleClick();
+        } else if (result.isError) {
+          handleClick();
+          console.log(result);
+        }
+        // console.log('response login')
+      }, [result]);
+
   return (
-    <div
-      className="flex flex-col w-full h-screen justify-center items-center bg-no-repeat bg-cover relative z-10 bg-gray-100 bg-opacity-20"
-      style={{ backgroundImage: "url(" + bg + ")", }}
-    >
-      <div className="mx-auto my-auto flex flex-col text-center bg-gray-200 py-4 rounded-xl absolute z-20 items-center px-6">
-        <img
-          src={logo}
-          alt=""
-          className="rounded-full p-4 inline-block"
-          width={150}
-          height={150}
-        />
-        <TextField
+    <div className="flex flex-col gap-4 max-h-full">
+        <div className='flex flex-row w-full h-fit justify-between items-center'>
+            <Breadcrumbs>
+                <BiHome size={20} className='opacity-50'/>
+                <p className="font-poppins">
+                    Update Account
+                </p>
+            </Breadcrumbs>
+        </div>
+
+        <div className='w-fit m-auto flex flex-col px-4 py-2 border-2 rounded-xl'>
+        {/* <TextField
           label="Username"
           id="outlined-start-adornment"
           sx={{
@@ -110,7 +98,7 @@ const LoginPage = () => {
             },
           }}
           inputRef={nameRef}
-        />
+        /> */}
 
         <FormControl
           sx={{
@@ -146,7 +134,6 @@ const LoginPage = () => {
             inputRef={passwordRef}
           />
         </FormControl>
-
         <div className="w-fit m-auto flex flex-row">
           {result.isLoading ? (
             <Button variant="contained">
@@ -156,19 +143,19 @@ const LoginPage = () => {
             <Button
               variant="contained"
               sx={{ m: 1, width: "30ch" }}
-              onClick={checkAuth}
+              onClick={updatePassword}
             >
-              LogIn
-              <span>
+              Update Passsword
+              {/* <span>
                 <MdOutlineKeyboardArrowRight size={30} />
-              </span>
+              </span> */}
             </Button>
           )}
         </div>
+        </div>
         <AlertComponent open={open} handleClose={handleClose} result={result} />
-      </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default Account

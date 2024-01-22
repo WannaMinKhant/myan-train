@@ -16,10 +16,11 @@ import socketIO from 'socket.io-client';
 import TimeTable from './Page/TimeTable/TimeTable';
 import StationDepature from './Page/StationDepature/StationDepature';
 import StationDepatureList from './Page/StationDepature/StationDepatureList';
+import Account from './Page/Authentication/Account';
 
 function App() {
 
-  const socket = socketIO.connect('http://localhost:3500')
+  const socket = socketIO.connect('http://192.168.1.100:3500')
 
   return (
     <Layout>
@@ -38,6 +39,7 @@ function App() {
         <Route path="/time-table" element={<TimeTable />} />
         <Route path="/time-duration" element={<StationDepature />} />
         <Route path="/time-duration-all" element={<StationDepatureList />} />
+        <Route path="/account" element={<Account/>} />
       </Routes>
     </Layout>
   );

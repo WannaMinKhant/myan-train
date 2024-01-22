@@ -33,8 +33,8 @@ const AddTrain = () => {
     const trainEngRef = useRef();
     const edittrainRef = useRef();
     const edittrainEngRef = useRef();
-    const [cateValue, setCateValue] = useState()
-    const [laneValue,setLaneValue] = useState()
+    const [cateValue, setCateValue] = useState(0)
+    const [laneValue,setLaneValue] = useState(0)
 
     const [editTrainState, setEditTrainState] = useState();
     const [open, setOpen] = useState(false);
@@ -51,11 +51,16 @@ const AddTrain = () => {
         setEditTrainState(e.id);
         edittrainRef.current.value = e.train_no;
         edittrainEngRef.current.value = e.eng_train_no;
+        setCateValue(e.category_id);
+        setLaneValue(e.lane_id);
         setOpen(true);
     };
     const closeDrawer = () => setOpen(false);
 
     const addTrainHandler = async (e) => {
+        if(laneValue == 0 || cateValue == 0) {
+            return;
+        }
         e.preventDefault();
         let body = {
             category_id: cateValue,
@@ -73,17 +78,22 @@ const AddTrain = () => {
 
     const editTrainHandler = async (e) => {
         //  e.preventDefault();
+        if(laneValue == 0 || cateValue == 0) {
+            return;
+        }
         let body = {
             id: editTrainState,
-            category_id: "1",
+            category_id: cateValue,
             train_no: edittrainRef.current.value,
             eng_train_no: edittrainEngRef.current.value,
-            lane_id:1,
+            lane_id:laneValue,
         }
         await editTrain(body);
         refetch();
         edittrainRef.current.value = "";
         edittrainEngRef.current.value = "";
+        setLaneValue(0)
+        setCateValue(0)
         closeDrawer();
     }
     const deleteTrainHandler = async (id) => {
@@ -200,6 +210,23 @@ const AddTrain = () => {
                         defaultValue={open ? edittrainEngRef.eng_train_no : ""}
                         inputRef={edittrainEngRef}
                     />
+                    <div className="w-full">
+                        <Select label="Select Way" onChange={(e) => setCateValue(e)} >
+                            <Option value='1'>မြို့ပတ်ရထား</Option>
+                            <Option value='2'>အမြန်ရထား</Option>
+                        </Select>
+                    </div>
+                    <div className="w-full">
+                    <Select label="Select Lane" onChange={(e) => setLaneValue(e)} >
+                        {
+                           laneSuccess ? LaneList.data.map((lane)=>(
+                            <Option value={lane.id}>{lane.name}</Option>
+                            ))  : <Option value={"0"}>{"Select Lane"}</Option>
+                        }
+
+                           
+                    </Select>
+                    </div>
 
                     <Button onClick={editTrainHandler}>
                         {editTrainResult.isLoading ? <Spinner /> : "Save"}
@@ -261,7 +288,7 @@ const AddTrain = () => {
                 </form>
             </div>
             <div className='flex flex-col w-full'>
-                <Box sx={{ height: 400, width: '100%' }}>
+                <Box sx={{ height: 500, width: '100%' }}>
                     {isSuccess ?
                         <DataGrid
                             rows={data?.data}
@@ -282,8 +309,8 @@ const AddTrain = () => {
                             // }
 
                             // }
-                            pageSizeOptions={[5]}
-                            checkboxSelection
+                            pageSizeOptions={[5,10,25,50,10]}
+                            // checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}
                             showCellVerticalBorder

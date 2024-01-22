@@ -44,7 +44,7 @@ const AdvertisePage = () => {
   //Drawer
   const [open, setOpen] = useState(false);
   const openDrawer = (e) => {
-    setActiveVideo("http://127.0.0.1:8000/" + e)
+    setActiveVideo("http://192.168.1.100/mts/public/" + e)
     setOpen(true);
   };
   const closeDrawer = () => setOpen(false);
@@ -126,7 +126,7 @@ const AdvertisePage = () => {
             // poster="https://assets.codepen.io/6093409/river.jpg"
           >
             <source
-              src={"http://127.0.0.1:8000/" + params.row.movie}
+              src={"http://192.168.1.100/mts/public/" + params.row.movie}
               type="video/mp4"
             />
           </video>
