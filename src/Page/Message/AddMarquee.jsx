@@ -161,7 +161,7 @@ const AddMarquee = ({socket}) => {
                       },
                     },
                   }}
-                  pageSizeOptions={[5]}
+                  pageSizeOptions={[5,10,20,50,100]}
                   checkboxSelection
                   disableRowSelectionOnClick
                   slots={{ toolbar: GridToolbar }}

@@ -1,21 +1,17 @@
 import React, { useState, useRef } from "react";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { BiTrash, BiHome } from "react-icons/bi";
-// import AlertComponent from "../../Components/AlertComponent";
 import MyToolTip from "../../Components/MyToolTip";
 import Box from "@mui/material/Box";
 import { v4 as uuidv4 } from "uuid";
 import { Select, Option } from "@material-tailwind/react";
-// import { XMarkIcon } from "@heroicons/react/24/outline";
-// import { FaEdit } from "react-icons/fa";
+
 import { IoAddCircleOutline } from "react-icons/io5";
 import {
   Button,
-  // Input,
+  Input,
   IconButton,
   Spinner,
-  // Drawer,
-  // Typography,
 } from "@material-tailwind/react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
@@ -56,17 +52,13 @@ const TimeTable = () => {
   const [TostationId, setToStationId] = useState();
   const [trainId, setTrainId] = useState();
   const [lane, setLane] = useState();
-  // const [open, setOpen] = useState(false);
 
   const [cateValue, setCateValue] = useState()
 
   const toTimeRef = useRef();
   const fromTimeRef = useRef();
+  const platformRef = useRef();
 
-  // const openDrawer = async (e) => {
-  //   await setOpen(true);
-  // };
-  // const closeDrawer = () => setOpen(false);
 
   const confirmDelete = (id) => {
     Swal.fire({
@@ -106,19 +98,24 @@ const TimeTable = () => {
       renderCell: (params) => <p>{params.row.post.name}</p>,
     },
     {
+      field: "platform_id",
+      headerName: "Platform",
+      width:100,
+    },
+    {
       field: "fromtime",
       headerName: "From Time",
-      flex: 1,
+      width:100,
     },
     {
       field: "totime",
       headerName: "To Time",
-      flex: 1,
+      width:100,
     },
     {
       field: "category_id",
-      headerName: "Lane",
-      flex: 1,
+      headerName: "Type",
+      width:100,
       renderCell: (params) => (
         <p>
           {params.row.category_id == 2
@@ -131,7 +128,7 @@ const TimeTable = () => {
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
+      width:70,
       renderCell: (params) => (
         <div className="flex flex-row gap-4 justify-between">
           {/* <div> */}
@@ -153,7 +150,7 @@ const TimeTable = () => {
     const body = {
       train_id: trainId,
       station_id: FromstationId,
-      platform_id: 1,
+      platform_id:platformRef.current.value,
       fromtime: fromTimeRef.current.value,
       totime: toTimeRef.current.value,
       to_station_id: TostationId,
@@ -193,7 +190,7 @@ const TimeTable = () => {
                     },
                   },
                 }}
-                pageSizeOptions={[5]}
+                pageSizeOptions={[5,10,20,50,100]}
                 // checkboxSelection
                 disableRowSelectionOnClick
                 slots={{ toolbar: GridToolbar }}
@@ -250,6 +247,11 @@ const TimeTable = () => {
                     ))}
                 </Select>
               </div>
+              <Input
+                type="number"
+                label="Platform Number"
+                inputRef={platformRef}
+              />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <TimePicker
                   ampm={false}
@@ -282,7 +284,7 @@ const TimeTable = () => {
                         </Select>
               </div>
               <div className="w-full">
-                    <Select label="Select Way" onChange={(e) => setLane(e)} >
+                    <Select label="Select Lane" onChange={(e) => setLane(e)} >
                         {
                            laneSuccess ? LaneList.data.map((lane)=>(
                             <Option value={lane.id}>{lane.name}</Option>
@@ -292,26 +294,7 @@ const TimeTable = () => {
                            
                     </Select>
               </div>
-                    
-              {/* <div className="flex-row flex justify-end">
-              {addLaneResutl.isLoading ? (
-                <Button
-                  variant="filled"
-                  className="flex items-center gap-3 px-4 py-2 m-1"
-                >
-                  <Spinner color="indigo" />
-                </Button>
-              ) : (
-                <Button
-                  variant="filled"
-                  className="flex items-center gap-3 px-4 py-2 m-1"
-                  onClick={AddLane}
-                >
-                  <IoAddCircleOutline strokeWidth={2} className="h-5 w-5" />
-                  Add
-                </Button>
-              )}
-            </div> */}
+
               {addTimeTableResult.isLoading ? (
                 <Button>
                   <Spinner />

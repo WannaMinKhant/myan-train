@@ -58,7 +58,6 @@ const LoginPage = () => {
       role_id: "1",
     };
 
-    // console.log(auth)
     await login(auth);
   };
 
@@ -74,7 +73,6 @@ const LoginPage = () => {
       handleClick();
       console.log(result);
     }
-    // console.log('response login')
   }, [result]);
 
   const [showPassword, setShowPassword] = useState(false);

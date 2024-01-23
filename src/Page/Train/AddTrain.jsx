@@ -233,11 +233,6 @@ const AddTrain = () => {
                     </Button>
                 </form>
             </Drawer>
-            {/* <div className="flex-row w-full justify-start flex">
-                <p className="px-4 py-2 bg-[#57626c] rounded-lg text-white font-bold">
-                    Add Train
-                </p>
-            </div> */}
                 <Breadcrumbs>
                     <BiHome size={20} className='opacity-50'/>
                     <p className="font-poppins">
@@ -300,16 +295,7 @@ const AddTrain = () => {
                                     },
                                 },
                             }}
-                            // onRowClick={(e, b) => {
-                            //    const checked = b.target;
-                            //    console.log(checked)
-                            //     //console.log(checked.includes("bg-green-200"))
-                            //     // if(b.target.role != null) return
-                            //     openDrawer(e.row)
-                            // }
-
-                            // }
-                            pageSizeOptions={[5,10,25,50,10]}
+                            pageSizeOptions={[5,10,20,50,100]}
                             // checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}

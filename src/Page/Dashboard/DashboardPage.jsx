@@ -67,8 +67,7 @@ const DashboardPage = ({ socket }) => {
                     <p className="ml-3 text-sm text-gray-200">{station.name}</p>
                   </div>
                 </div>
-                {/* <div className={`absolute w-4 h-4 top-0 right-0 rounded-full ${station.status == 1 ? ' bg-green-500' : 'bg-red-500'}`}>
-                </div>  */}
+
               </div>
             );
           })}

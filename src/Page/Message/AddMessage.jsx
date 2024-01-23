@@ -42,7 +42,7 @@ const AddMessage = () => {
     const { data, isLoading, isSuccess, refetch } = useGetMessageQuery();
     const [addMsg, addMessageResult] = useAddMessageMutation();
     const [editMsg, editMessageResult] = useEditMessageMutation();
-    const [deleteMsg, deleteMessageResult] = useDeleteMessageMutation();
+    const [deleteMsg] = useDeleteMessageMutation();
 
     const openDrawer = async (e) => {
         console.log(e);
@@ -228,7 +228,7 @@ const AddMessage = () => {
                                 },
                             }}
                             density='compact'
-                            pageSizeOptions={[5,10,25,50,100]}
+                            pageSizeOptions={[5,10,20,50,100]}
                             // checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}

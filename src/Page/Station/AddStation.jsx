@@ -272,12 +272,7 @@ const AddStation = () => {
                         // defaultValue={open ? editCustomerRef.customer : ""}
                         inputRef={stationOrderRef}
                     />
-                    {/* <div className="md:w-72 lg:w-72 w-20">
-                        <Select label="Select Way" onChange={(e) => setCateValue(e)} >
-                            <Option value='1'>Circular Train</Option>
-                            <Option value='2'>Express Train</Option>
-                        </Select>
-                    </div> */}
+
                     <div className="flex-none">
                         <Button
                             type="submit"
@@ -304,17 +299,8 @@ const AddStation = () => {
                                 },
                             }}
                             
-                            // onRowClick={(e, b) => {
-                            //    const checked = b.target;
-                            //    console.log(checked)
-                            //     //console.log(checked.includes("bg-green-200"))
-                            //     // if(b.target.role != null) return
-                            //     openDrawer(e.row)
-                            // }
-
-                            // }
                             density='compact'
-                            pageSizeOptions={[5,10,25,50,100]}
+                            pageSizeOptions={[5,10,20,50,100]}
                             checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}

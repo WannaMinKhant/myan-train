@@ -1,6 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react'
-import { Select, Option } from "@material-tailwind/react";
+import React, { useState, useRef } from 'react'
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -13,12 +12,10 @@ import MyToolTip from '../Components/MyToolTip';
 import {
     Button,
     Input,
-    Card,
     Typography,
     Drawer,
     IconButton,
     Spinner,
-    Tooltip,
 } from "@material-tailwind/react";
 
 import {
@@ -33,7 +30,6 @@ const AddCategory = () => {
     const engNameRef = useRef();
     const editnameRef = useRef();
     const editengNameRef = useRef();
-    const [cateValue, setCateValue] = useState()
 
     const [editCategoryState, setEditategoryState] = useState();
     const [open, setOpen] = useState(false);
@@ -42,7 +38,7 @@ const AddCategory = () => {
     const { data, isLoading, isSuccess, refetch } = useGetCategoryQuery();
     const [addCategory, addCategoryResult] = useAddCategoryMutation();
     const [editCategory, editCategoryResult] = useEditCategoryMutation();
-    const [deleteCategory, deleteCategoryResult] = useDeleteCategoryMutation();
+    const [deleteCategory] = useDeleteCategoryMutation();
 
     const openDrawer = async (e) => {
         console.log(e);
@@ -220,15 +216,6 @@ const AddCategory = () => {
                                     },
                                 },
                             }}
-                            // onRowClick={(e, b) => {
-                            //    const checked = b.target;
-                            //    console.log(checked)
-                            //     //console.log(checked.includes("bg-green-200"))
-                            //     // if(b.target.role != null) return
-                            //     openDrawer(e.row)
-                            // }
-
-                            // }
                             pageSizeOptions={[5]}
                             checkboxSelection
                             disableRowSelectionOnClick

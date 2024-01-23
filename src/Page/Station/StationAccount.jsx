@@ -54,7 +54,7 @@ const confirmDelete = (id) => {
       if (deleteCusResult.isConfirmed) {
           console.log(id)
           deleteStationAccount(id)
-          Swal.fire("Deleted!", "Your category has been deleted.", "success");
+          Swal.fire("Deleted!", "Your Account has been deleted.", "success");
       }
   });
 };
@@ -174,7 +174,7 @@ const deleteStationAccount = async (id)=>{
                                     },
                                 },
                             }}
-                            pageSizeOptions={[5]}
+                            pageSizeOptions={[5,10,20,50,100]}
                             checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}
@@ -196,13 +196,13 @@ const deleteStationAccount = async (id)=>{
             <Input
                 type="text"
                 label="Username"
-                // defaultValue={open ? editCustomerRef.customer : ""}
+                
                 inputRef={nameRef}
             />
             <Input
                 type="password"
                 label="Password"
-                // defaultValue={open ? editCustomerRef.customer : ""}
+               
                 inputRef={passwordRef}
             />
             {stationSuccess && <div className="w-full">

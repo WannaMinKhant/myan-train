@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = 'http://192.168.1.100/mts/public/api/v1/admin';
+// const baseUrl = 'http://192.168.1.100/mts/public/api/v1/admin';
 
-// const baseUrl = 'http://127.0.0.1:8000/api/v1/admin';
+const baseUrl = 'http://127.0.0.1:8000/api/v1/admin';
 
 // const baseUrl = 'http://192.168.137.1:8000/api/v1/admin';
 

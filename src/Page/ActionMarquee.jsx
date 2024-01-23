@@ -55,7 +55,7 @@ const ActionMarquee = ({socket}) => {
         },
         {
             field: 'description',
-            headerName: 'Myanmar',
+            headerName: 'Message Description',
             flex: 3,
         },
         
@@ -125,7 +125,7 @@ const ActionMarquee = ({socket}) => {
                             },
                         }}
                         density='compact'
-                        pageSizeOptions={[5,10,25,50,100]}
+                        pageSizeOptions={[5,10,20,50,100]}
                         checkboxSelection
                         disableRowSelectionOnClick
                         slots={{ toolbar: GridToolbar }}

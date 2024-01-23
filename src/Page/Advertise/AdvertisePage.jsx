@@ -197,7 +197,7 @@ const AdvertisePage = () => {
                   },
                 }}
                 density='compact'
-                pageSizeOptions={[5,10,25,50,100]}
+                pageSizeOptions={[5,10,20,50,100]}
                 // checkboxSelection
                 disableRowSelectionOnClick
                 slots={{ toolbar: GridToolbar }}

@@ -8,7 +8,6 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
 import {
   MdVisibility,
   MdVisibilityOff,
@@ -24,7 +23,6 @@ const handleMouseDownPassword = (event) => {
 
 const Account = () => {
 
-    const nameRef = useRef('');
     const passwordRef = useRef('');
     const [updateAccount, result ] = useUpdatePasswordMutation();
 
@@ -40,8 +38,6 @@ const Account = () => {
           role_id: user.role_id,
         };
     
-        console.log(auth)
-        // await passwordRef(auth);
         await updateAccount(auth)
       };
       const [showPassword, setShowPassword] = useState(false);
@@ -61,16 +57,11 @@ const Account = () => {
       };
       useEffect(() => {
         if (result.isSuccess) {
-          console.log(result);
-        //   localStorage.setItem("token", result.data.token);
-        //   localStorage.setItem("user", JSON.stringify(result.data.data));
-        //   localStorage.setItem("auth", 1);
           handleClick();
         } else if (result.isError) {
           handleClick();
-          console.log(result);
         }
-        // console.log('response login')
+
       }, [result]);
 
   return (
@@ -85,21 +76,6 @@ const Account = () => {
         </div>
 
         <div className='w-fit m-auto flex flex-col px-4 py-2 border-2 rounded-xl'>
-        {/* <TextField
-          label="Username"
-          id="outlined-start-adornment"
-          sx={{
-            m: 1,
-            width: "30ch",
-            "& .MuiOutlinedInput-root": {
-              "&.Mui-focused fieldset": {
-                borderColor: "blue",
-              },
-            },
-          }}
-          inputRef={nameRef}
-        /> */}
-
         <FormControl
           sx={{
             m: 1,
