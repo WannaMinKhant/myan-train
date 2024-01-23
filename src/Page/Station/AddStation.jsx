@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import MyToolTip from '../../Components/MyToolTip';
 import { Breadcrumbs } from "@material-tailwind/react";
 import AlertComponent from '../../Components/AlertComponent';
-
+import WarnningComponent from "../../Components/WarnningComponent";
 import {
     Button,
     Input,
@@ -55,12 +55,9 @@ const AddStation = () => {
       }
       setOpenAlert(false);
     };
-  
     const handleClick = () => {
         setOpenAlert(true);
     };
-
-
 
     const openDrawer = async (e) => {
 
@@ -73,8 +70,35 @@ const AddStation = () => {
     };
     const closeDrawer = () => setOpen(false);
 
+
+//alert box for warning
+    const [result,setResult] = useState({});
+    const [openWarn, setOpenWarn] = useState(false);
+    const handleWarnClick = () => {
+      setOpenWarn(true);
+      };
+    const handleWarnClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpenWarn(false);
+    };
+
+
+
     const addStationHandler = async (e) => {
         e.preventDefault();
+        if(stationRef.current.value == "" || stationEngRef.current.value == "" || stationOrderRef.current.value == ""){
+            setResult({
+                success:"",
+                isSuccess:false,
+                warning:true,
+                error:false,
+                msg:"Please Enter Station Data."
+              });
+              handleWarnClick();
+              return;
+        }       
         let body = {
             category_id: 1,
             name: stationRef.current.value,
@@ -90,7 +114,20 @@ const AddStation = () => {
 
     const editStationHandler = async (e) => {
 
+
         if(editStationResult.isLoading ) return;
+
+        if(editstationRef.current.value == "" || editstationEngRef.current.value == "" || editStationOrderRef.current.value == ""){
+            setResult({
+                success:"",
+                isSuccess:false,
+                warning:true,
+                error:false,
+                msg:"Please Enter Station Data."
+              });
+              handleWarnClick();
+              return;
+        }   
         //  e.preventDefault();
         let body = {
             id: editStationState,
@@ -107,7 +144,7 @@ const AddStation = () => {
         closeDrawer();
     }
     const deleteStationHandler = async (id) => {
-        console.log(id)
+        
         await deleteStation(id);
         refetch();
     }
@@ -318,6 +355,7 @@ const AddStation = () => {
                 </Box>
             </div>
             <AlertComponent open={openAlert} handleClose={handleClose} result={alertResult}/>
+            <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
         </div>
     )
 }

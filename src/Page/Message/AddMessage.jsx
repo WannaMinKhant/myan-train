@@ -8,6 +8,7 @@ import { BiTrash } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import MyToolTip from '../../Components/MyToolTip';
+import WarnningComponent from "../../Components/WarnningComponent";
 
 import {
     Button,
@@ -33,6 +34,18 @@ const AddMessage = () => {
     const titleRef = useRef();
     const edittitleRef = useRef();
 
+    const [result,setResult] = useState({});
+    const [openAlert, setOpenAlert] = useState(false);
+    const handleClick = () => {
+        setOpenAlert(true);
+      };
+    const handleClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpenAlert(false);
+    };
+
     const [editMsgState, setEditMsgState] = useState();
     const [open, setOpen] = useState(false);
     const [msgState, setMsgState] = useState("");
@@ -54,6 +67,17 @@ const AddMessage = () => {
     const closeDrawer = () => setOpen(false);
 
     const AddMsgHandler = async (e) => {
+        if(titleRef.current.value == "" || msgState == ""){
+            setResult({
+                success:"",
+                isSuccess:false,
+                warning:true,
+                error:false,
+                msg:"Please Enter All Data"
+              });
+              handleClick();
+              return;
+        }
         e.preventDefault();
         let body = {
             title: titleRef.current.value,
@@ -245,6 +269,7 @@ const AddMessage = () => {
                         /> : <></>}
                 </Box>
             </div>
+            <WarnningComponent result={result} open={openAlert} handleClose={handleClose}/>
         </div>
     )
 }

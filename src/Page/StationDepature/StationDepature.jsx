@@ -393,17 +393,6 @@ const StationDepature = () => {
                       />
                     </LocalizationProvider>
                   </div>
-                  {/* <div className="w-24 flex flex-row justify-center">
-                    { stat.check ? (
-                      <IconButton>
-                        <FaCheck size={25} />
-                      </IconButton>
-                    ) : (
-                      <IconButton onClick={() => DepatureTime(i)}>
-                        <IoAddCircleOutline size={25} />
-                      </IconButton>
-                    )}
-                  </div> */}
                 </div>
               );
             })}

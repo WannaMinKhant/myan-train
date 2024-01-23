@@ -23,6 +23,7 @@ import { Breadcrumbs } from "@material-tailwind/react";
 import { BiHome } from "react-icons/bi";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import WarnningComponent from "../../Components/WarnningComponent";
 
 const AddMarquee = ({socket}) => {
   const { data, isLoading, isSuccess, refetch } = useGetMessageQuery();
@@ -45,6 +46,20 @@ const AddMarquee = ({socket}) => {
   const [messageId,setMessageID] = useState(0);
   const [loading, setLoading] = useState(true)
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
+
+  const [result,setResult] = useState({});
+  const [openWarn, setOpenWarn] = useState(false);
+  const handleWarnClick = () => {
+    setOpenWarn(true);
+    };
+  const handleWarnClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenWarn(false);
+  };
+
+
   const header = [
     {
       field: 'id',
@@ -63,12 +78,22 @@ const AddMarquee = ({socket}) => {
 
   const AddMarqueeHandler = async (e) => {
     e.preventDefault();
+    if(rowSelectionModel.length == 0){
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:true,
+        error:false,
+        msg:"Please Select One or more Station."
+      });
+      handleWarnClick();
+      return;
+    }
+
     for (let i = 0; i < rowSelectionModel.length; i++) {
       console.log(rowSelectionModel.length)
-      // setSelectList([...selectList, { "id": rowSelectionModel[i] }]);
       selectList.push({ "id": rowSelectionModel[i] })
       console.log(selectList);
-
     }
     let body = {
       message_id: messageId,
@@ -183,7 +208,7 @@ const AddMarquee = ({socket}) => {
             </Box>
           </div>
         </div>
-        {/* </div> */}
+       <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
       </div>}
     </>
 

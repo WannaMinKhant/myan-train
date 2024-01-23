@@ -25,7 +25,7 @@ import {
 } from "@material-tailwind/react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { IoAddCircleOutline } from "react-icons/io5";
-
+import WarnningComponent from "../../Components/WarnningComponent";
 import {
   useGetLaneQuery,
   useAddLaneMutation,
@@ -98,8 +98,8 @@ const LanePage = () => {
       return st.id == note 
     })));
     setEditStation(eStation);
-    console.log(e.note)
-    console.log(eStation)
+    // console.log(e.note)
+    // console.log(eStation)
     setStationId(e.rotation);
     setOpen(true);
   };
@@ -121,6 +121,18 @@ const LanePage = () => {
     setOpenAlert(true);
   };
 
+  
+  const [result,setResult] = useState({});
+  const [openWarn, setOpenWarn] = useState(false);
+  const handleWarnClick = () => {
+    setOpenWarn(true);
+    };
+  const handleWarnClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenWarn(false);
+  };
 
 
   const header = [
@@ -179,6 +191,17 @@ const LanePage = () => {
   ];
 
   const AddLane = async () => {
+    if(nameRef.current.value == "" || fromRef.current.value == "" || toRef.current.value == "" || newStation.length == 0){
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:true,
+        error:false,
+        msg:"Please Enter all Data for this lane."
+      });
+      handleWarnClick();
+      return;
+    }
     let lstStation = newStation.map((st) => st.id)
     const body = {
         name: nameRef.current.value,
@@ -199,7 +222,22 @@ const LanePage = () => {
   };
 
   const editLaneHandler = async () => {
+    if(editStationId.length > 0) return;
     let lstStation = editStationId.map((st) => st.id)
+
+
+    if(editNameRef.current.value == "" || editFromRef.current.value == "" || editToRef.current.value == ""){
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:true,
+        error:false,
+        msg:"Please Enter all Data for this lane."
+      });
+      handleWarnClick();
+      return;
+    }
+   
     const body = {
         name: editNameRef.current.value,
         from: editFromRef.current.value,
@@ -598,6 +636,7 @@ const LanePage = () => {
         handleClose={handleClose}
         result={alertResult}
       />
+       <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
     </div>
   );
 };

@@ -19,7 +19,7 @@ import {
     IconButton,
     Spinner,
 } from "@material-tailwind/react";
-
+import WarnningComponent from "../../Components/WarnningComponent";
 import { useGetLaneQuery } from '../../ApiService/laneSlice';
 import {
     useGetTrainQuery,
@@ -57,9 +57,31 @@ const AddTrain = () => {
     };
     const closeDrawer = () => setOpen(false);
 
+  //alert box for warning
+  const [result,setResult] = useState({});
+  const [openWarn, setOpenWarn] = useState(false);
+  const handleWarnClick = () => {
+    setOpenWarn(true);
+    };
+  const handleWarnClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenWarn(false);
+  };
+
+
     const addTrainHandler = async (e) => {
-        if(laneValue == 0 || cateValue == 0) {
-            return;
+        if(laneValue == 0 || cateValue == 0 || trainRef.current.value == "" || trainEngRef.current.value =="") {
+            setResult({
+                success:"",
+                isSuccess:false,
+                warning:true,
+                error:false,
+                msg:"Please Enter all Data."
+              });
+              handleWarnClick();
+              return;
         }
         e.preventDefault();
         let body = {
@@ -78,8 +100,16 @@ const AddTrain = () => {
 
     const editTrainHandler = async (e) => {
         //  e.preventDefault();
-        if(laneValue == 0 || cateValue == 0) {
-            return;
+        if(laneValue == 0 || cateValue == 0 || edittrainRef.current.value == "" || edittrainEngRef.current.value == "") {
+            setResult({
+                success:"",
+                isSuccess:false,
+                warning:true,
+                error:false,
+                msg:"Please Enter all Data."
+              });
+              handleWarnClick();
+              return;
         }
         let body = {
             id: editTrainState,
@@ -312,6 +342,7 @@ const AddTrain = () => {
                         /> : <></>}
                 </Box>
             </div>
+            <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
         </div>
     )
 }

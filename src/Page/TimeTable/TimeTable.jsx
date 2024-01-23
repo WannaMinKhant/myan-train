@@ -5,7 +5,7 @@ import MyToolTip from "../../Components/MyToolTip";
 import Box from "@mui/material/Box";
 import { v4 as uuidv4 } from "uuid";
 import { Select, Option } from "@material-tailwind/react";
-
+import WarnningComponent from "../../Components/WarnningComponent";
 import { IoAddCircleOutline } from "react-icons/io5";
 import {
   Button,
@@ -48,16 +48,16 @@ const TimeTable = () => {
 
   const {data:LaneList,isSuccess:laneSuccess} = useGetLaneQuery();
 
-  const [FromstationId, setFromStationId] = useState();
-  const [TostationId, setToStationId] = useState();
-  const [trainId, setTrainId] = useState();
-  const [lane, setLane] = useState();
+  const [FromstationId, setFromStationId] = useState(0);
+  const [TostationId, setToStationId] = useState(0);
+  const [trainId, setTrainId] = useState(0);
+  const [lane, setLane] = useState(0);
 
-  const [cateValue, setCateValue] = useState()
+  const [cateValue, setCateValue] = useState(0)
 
-  const toTimeRef = useRef();
-  const fromTimeRef = useRef();
-  const platformRef = useRef();
+  const toTimeRef = useRef("");
+  const fromTimeRef = useRef("");
+  const platformRef = useRef(0);
 
 
   const confirmDelete = (id) => {
@@ -146,7 +146,33 @@ const TimeTable = () => {
     },
   ];
 
+  //alert box for warning
+  const [result,setResult] = useState({});
+  const [openWarn, setOpenWarn] = useState(false);
+  const handleWarnClick = () => {
+    setOpenWarn(true);
+    };
+  const handleWarnClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenWarn(false);
+  };
+
   const AddTimeTableToServer = async () => {
+
+    if(trainId == 0 || FromstationId == 0 || TostationId == 0 || platformRef.current.value == "" || platformRef.current.value == 0 || fromTimeRef.current.value == "" || toTimeRef.current.value == "" || lane == 0 || cateValue == 0){
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:true,
+        error:false,
+        msg:"Please Enter all Data."
+      });
+      handleWarnClick();
+      return;
+    }
+    
     const body = {
       train_id: trainId,
       station_id: FromstationId,
@@ -309,6 +335,7 @@ const TimeTable = () => {
             </div>
           )}
         </div>
+        <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
       </div>
     </div>
   );

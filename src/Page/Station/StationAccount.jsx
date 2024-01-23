@@ -16,6 +16,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { IoAddCircleOutline } from "react-icons/io5";
 import { useGetStationAccountQuery, useGetStationQuery,useAddStationAccountMutation,useDeleteStationAccountMutation } from '../../ApiService/stationSlice'
 import AlertComponent from '../../Components/AlertComponent';
+import WarnningComponent from "../../Components/WarnningComponent";
 
 const StationAccount = () => {
 
@@ -60,7 +61,6 @@ const confirmDelete = (id) => {
 };
 
   const header = [
-
     {
         field: 'station',
         headerName: 'Station',
@@ -97,11 +97,30 @@ const confirmDelete = (id) => {
         )
     },
 ];
-
+  //alert box for warning
+  const [result,setResult] = useState({});
+  const [openWarn, setOpenWarn] = useState(false);
+  const handleWarnClick = () => {
+    setOpenWarn(true);
+    };
+  const handleWarnClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenWarn(false);
+  };
 const AddStationAccount = async ()=>{
 
     if(nameRef.current.value == "" || passwordRef.current.value == "" || stationId == "0"){
-
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:true,
+        error:false,
+        msg:"Please Enter all Data."
+      });
+      handleWarnClick();
+     
       return;
     }
 
@@ -175,7 +194,7 @@ const deleteStationAccount = async (id)=>{
                                 },
                             }}
                             pageSizeOptions={[5,10,20,50,100]}
-                            checkboxSelection
+                            // checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}
                             showCellVerticalBorder
@@ -232,7 +251,7 @@ const deleteStationAccount = async (id)=>{
             </div>
           </div>
         </div>
-        
+        <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
       </div>
       <AlertComponent open={openAlert} handleClose={handleClose} result={alertResult}/>
     </div>

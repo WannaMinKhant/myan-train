@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import Swal from "sweetalert2";
 import { BiTrash, BiHome } from "react-icons/bi";
 import { Breadcrumbs } from "@material-tailwind/react";
@@ -26,6 +26,7 @@ import {
   useAddAdsMutation,
   useDeleteAdsMutation,
 } from "../../ApiService/AdsSlice";
+import WarnningComponent from "../../Components/WarnningComponent";
 
 const AdvertisePage = () => {
   const { data, isSuccess, isLoading, refetch } = useGetAdsQuery();
@@ -73,9 +74,34 @@ const AdvertisePage = () => {
     return () => URL.revokeObjectURL(objectUrl);
   };
 
-  let formData = new FormData();
 
+   //alert box for warning
+   const [result,setResult] = useState({});
+   const [openWarn, setOpenWarn] = useState(false);
+   const handleWarnClick = () => {
+     setOpenWarn(true);
+     };
+   const handleWarnClose = (event, reason) => {
+     if (reason === "clickaway") {
+       return;
+     }
+     setOpenWarn(false);
+   };
+ 
+   let formData = new FormData();
   const AddAdsServer = async () => {
+
+    if(titleRef.current.value == "" || MsgBody == "" || selectedFiles == undefined || selectedFiles == null) {
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:true,
+        error:false,
+        msg:"Please Enter Advertise Video and Field."
+      });
+      handleWarnClick();
+      return;
+    }
     
     formData.append("title", titleRef.current.value);
     formData.append("body", MsgBody);
@@ -174,6 +200,30 @@ const AdvertisePage = () => {
     },
   ];
 
+  useEffect(() =>{
+    if(addAdsResult.isSuccess){
+      setResult({
+      success:"",
+      isSuccess:true,
+      warning:false,
+      error:false,
+      msg:"Success Process"
+    });
+    handleWarnClick();
+    
+    }else if(addAdsResult.isError){
+      setResult({
+        success:"",
+        isSuccess:false,
+        warning:false,
+        error:true,
+        msg:"Something went wrong, Please check your video file"
+      });
+      handleWarnClick();
+      
+    }
+    
+  },[addAdsResult]);
   return (
     <div className="flex flex-col w-full max-h-screen select-none overflow-y-auto scrollbar-hide">
       <div className="flex flex-row w-full h-fit justify-between items-center">
@@ -298,6 +348,7 @@ const AdvertisePage = () => {
         handleClose={handleClose}
         result={alertResult}
       />
+      <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>
     </div>
   );
 };
