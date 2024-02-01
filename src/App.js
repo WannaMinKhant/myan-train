@@ -17,6 +17,7 @@ import TimeTable from './Page/TimeTable/TimeTable';
 import StationDepature from './Page/StationDepature/StationDepature';
 import StationDepatureList from './Page/StationDepature/StationDepatureList';
 import Account from './Page/Authentication/Account';
+import AddCategory from './Page/addCategory';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
         <Route path="/time-duration" element={<StationDepature />} />
         <Route path="/time-duration-all" element={<StationDepatureList />} />
         <Route path="/account" element={<Account/>} />
+        <Route path="caetgory" element={<AddCategory/>}/>
       </Routes>
     </Layout>
   );

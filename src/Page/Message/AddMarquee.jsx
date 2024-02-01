@@ -78,13 +78,13 @@ const AddMarquee = ({socket}) => {
 
   const AddMarqueeHandler = async (e) => {
     e.preventDefault();
-    if(rowSelectionModel.length == 0){
+    if(rowSelectionModel.length == 0 || messageId == 0){
       setResult({
         success:"",
         isSuccess:false,
         warning:true,
         error:false,
-        msg:"Please Select One or more Station."
+        msg:"Please Select One or more Station or Please Select Message"
       });
       handleWarnClick();
       return;
@@ -174,7 +174,7 @@ const AddMarquee = ({socket}) => {
           />
 
           <div className='flex flex-col w-full'>
-            <Box sx={{ height: 400, width: '100%' }}>
+            <Box sx={{ height: 650, width: '100%' }}>
               {stationSuccess ?
                 <DataGrid
                   rows={station?.data}

@@ -2,7 +2,7 @@ import React,{ useRef,useState, useEffect } from 'react'
 import { useUpdatePasswordMutation } from '../../ApiService/authApiSlice'
 import { Breadcrumbs } from "@material-tailwind/react";
 import { BiHome } from "react-icons/bi";
-
+import WarnningComponent from "../../Components/WarnningComponent";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -21,6 +21,8 @@ const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+
+
 const Account = () => {
 
     const passwordRef = useRef('');
@@ -29,6 +31,17 @@ const Account = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const updatePassword = async () => {
+      if(passwordRef.current.value == ""){
+        setResult({
+          success:"",
+          isSuccess:false,
+          warning:true,
+          error:false,
+          msg:"Please Enter Password."
+        });
+        handleWarnClick();
+        return;
+      }
         const auth = {
             id:user.id,
           name: user.name,
@@ -37,7 +50,6 @@ const Account = () => {
           station_id: user.station_id,
           role_id: user.role_id,
         };
-    
         await updateAccount(auth)
       };
       const [showPassword, setShowPassword] = useState(false);
@@ -63,6 +75,19 @@ const Account = () => {
         }
 
       }, [result]);
+
+          //alert box for warning
+    const [resultWarn,setResult] = useState({});
+    const [openWarn, setOpenWarn] = useState(false);
+    const handleWarnClick = () => {
+      setOpenWarn(true);
+      };
+    const handleWarnClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpenWarn(false);
+    };
 
   return (
     <div className="flex flex-col gap-4 max-h-full">
@@ -130,6 +155,7 @@ const Account = () => {
         </div>
         </div>
         <AlertComponent open={open} handleClose={handleClose} result={result} />
+        <WarnningComponent result={resultWarn} open={openWarn} handleClose={handleWarnClose}/>
     </div>
   )
 }

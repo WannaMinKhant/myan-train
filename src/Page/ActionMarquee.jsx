@@ -112,7 +112,7 @@ const ActionMarquee = ({socket}) => {
                 <p className="font-poppins">Manage Announce</p>
                 </Breadcrumbs>
             </div>
-            <Box sx={{ height: 500, width: '100%' }}>
+            <Box sx={{ height: 650, width: '100%' }}>
                 {isSuccess ?
                     <DataGrid
                         rows={lstMessage}

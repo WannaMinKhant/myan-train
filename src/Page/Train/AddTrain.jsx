@@ -10,7 +10,7 @@ import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import MyToolTip from '../../Components/MyToolTip';
 import { Breadcrumbs } from "@material-tailwind/react";
-
+import { v4 as uuidv4 } from "uuid";
 import {
     Button,
     Input,
@@ -33,8 +33,11 @@ const AddTrain = () => {
     const trainEngRef = useRef();
     const edittrainRef = useRef();
     const edittrainEngRef = useRef();
+
     const [cateValue, setCateValue] = useState(0)
     const [laneValue,setLaneValue] = useState(0)
+    
+    const [laneName,setLaneName] = useState();
 
     const [editTrainState, setEditTrainState] = useState();
     const [open, setOpen] = useState(false);
@@ -51,11 +54,16 @@ const AddTrain = () => {
         setEditTrainState(e.id);
         edittrainRef.current.value = e.train_no;
         edittrainEngRef.current.value = e.eng_train_no;
+        // laneShowRef.current.value = e.lane.name;
+        // wayShowRef.current.value = e.category_id == 1 ? "မြို့ပတ်ရထား" : "အမြန်ရထား";
         setCateValue(e.category_id);
         setLaneValue(e.lane_id);
+        setLaneName(e.lane.name)
         setOpen(true);
+
     };
     const closeDrawer = () => setOpen(false);
+
 
   //alert box for warning
   const [result,setResult] = useState({});
@@ -149,7 +157,6 @@ const AddTrain = () => {
         });
     };
 
-
     const header = [
 
         {
@@ -216,9 +223,19 @@ const AddTrain = () => {
         },
     ];
 
+    const way = [
+        {
+            value:'1',
+            name:'မြို့ပါတ်ရထား',
+        },{
+            value:'2',
+            name:'အမြန်ရထား',
+        }
+    ];
+
     return (
         <div className="flex flex-col gap-4 px-16 max-h-full">
-            <Drawer placement="right" open={open} onClose={closeDrawer}>
+            <Drawer placement="right" open={open} onClose={closeDrawer} width={500}>
                 <div className="mb-2 flex items-center justify-between p-4">
                     <Typography variant="h5" color="blue-gray">
                         Edit Train
@@ -240,21 +257,36 @@ const AddTrain = () => {
                         defaultValue={open ? edittrainEngRef.eng_train_no : ""}
                         inputRef={edittrainEngRef}
                     />
+                    
                     <div className="w-full">
-                        <Select label="Select Way" onChange={(e) => setCateValue(e)} >
-                            <Option value='1'>မြို့ပတ်ရထား</Option>
-                            <Option value='2'>အမြန်ရထား</Option>
+                        <Select label="Select Way"  value={cateValue == 1 ? "မြို့ပတ်ရထား" : "အမြန်ရထား"}>
+                            {
+                                way.map((w)=>(
+                                <Option 
+                                onClick={()=>setCateValue(w.value)}
+                                value={w.value}
+                                key={uuidv4()}
+                                >
+                                    {w.name}
+                                </Option>
+                                ))
+                            }
                         </Select>
                     </div>
+
+                    
                     <div className="w-full">
-                    <Select label="Select Lane" onChange={(e) => setLaneValue(e)} >
+                    <Select label="Select Lane" value={laneName}>
                         {
                            laneSuccess ? LaneList.data.map((lane)=>(
-                            <Option value={lane.id}>{lane.name}</Option>
+                            <Option 
+                            onClick={()=> setLaneValue(lane.id)}
+                            value={lane.id}
+                            key={uuidv4()}
+                            >
+                                {lane.name}</Option>
                             ))  : <Option value={"0"}>{"Select Lane"}</Option>
                         }
-
-                           
                     </Select>
                     </div>
 
@@ -290,15 +322,13 @@ const AddTrain = () => {
                         </Select>
                     </div>
                     <div className="w-full md:w-96 lg:w-96">
-                    <Select label="Select Lane" onChange={(e) => setLaneValue(e)} >
-                        {
-                           laneSuccess ? LaneList.data.map((lane)=>(
-                            <Option value={lane.id}>{lane.name}</Option>
-                            ))  : <Option value={"0"}>{"Select Lane"}</Option>
-                        }
-
-                           
-                    </Select>
+                        <Select label="Select Lane" onChange={(e) => setLaneValue(e)} >
+                            {
+                            laneSuccess ? LaneList.data.map((lane)=>(
+                                <Option value={lane.id}>{lane.name}</Option>
+                                ))  : <Option value={"0"}>{"Select Lane"}</Option>
+                            }
+                        </Select>
                     </div>
                     <div className="flex-none">
                         <Button
@@ -313,7 +343,7 @@ const AddTrain = () => {
                 </form>
             </div>
             <div className='flex flex-col w-full'>
-                <Box sx={{ height: 500, width: '100%' }}>
+                <Box sx={{ height: 650, width: '100%' }}>
                     {isSuccess ?
                         <DataGrid
                             rows={data?.data}
@@ -337,9 +367,9 @@ const AddTrain = () => {
                                 },
                             }}
 
-                            loading={isLoading ? true : false}
+                            loading={isLoading}
 
-                        /> : <></>}
+                        /> : <><div className='w-full h-full justify-center items-center'><Spinner/></div></>}
                 </Box>
             </div>
             <WarnningComponent result={result} open={openWarn} handleClose={handleWarnClose}/>

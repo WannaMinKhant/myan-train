@@ -67,6 +67,7 @@ const AddMessage = () => {
     const closeDrawer = () => setOpen(false);
 
     const AddMsgHandler = async (e) => {
+        e.preventDefault();
         if(titleRef.current.value == "" || msgState == ""){
             setResult({
                 success:"",
@@ -77,8 +78,18 @@ const AddMessage = () => {
               });
               handleClick();
               return;
+        }else if(msgState.length > 65000){
+            setResult({
+                success:"",
+                isSuccess:false,
+                warning:true,
+                error:false,
+                msg:"Your message is too long"
+              });
+              handleClick();
+              return;
         }
-        e.preventDefault();
+       
         let body = {
             title: titleRef.current.value,
             description: msgState
@@ -238,8 +249,8 @@ const AddMessage = () => {
                     </div>
                 </form>
             </div>
-            <div className='flex flex-col w-full'>
-                <Box sx={{ height: 500, width: '100%' }}>
+            <div className='flex flex-col w-full h-fit'>
+                <Box sx={{ height: '100%', width: '100%' }}>
                     {isSuccess ?
                         <DataGrid
                             rows={data?.data}

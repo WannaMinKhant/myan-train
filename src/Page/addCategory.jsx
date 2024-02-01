@@ -204,7 +204,7 @@ const AddCategory = () => {
                 </form>
             </div>
             <div className='flex flex-col w-full'>
-                <Box sx={{ height: 400, width: '100%' }}>
+                <Box sx={{ height: 650, width: '100%' }}>
                     {isSuccess ?
                         <DataGrid
                             rows={data?.data}

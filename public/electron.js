@@ -12,7 +12,7 @@ const createMainWindow = () => {
         icon: __dirname + '/logo.ico',
     })
 
-    mainWindow.setMenu(null);
+    // mainWindow.setMenu(null);
     
     mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`
     )

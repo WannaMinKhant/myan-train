@@ -43,15 +43,18 @@ const LanePage = () => {
   const [stationId, setStationId] = useState();
 
   const nameRef = useRef();
-  const fromRef = useRef();
-  const toRef = useRef();
 
   const editNameRef = useRef();
-  const editFromRef = useRef();
-  const editToRef = useRef();
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  
+  const [endstationId, setEndStationId] = useState(0);
+  const [startStation, setStartStation] = useState(0);
+
+  const [editStart,setEditStart] = useState();
+  const [editEnd,setEditEnd] = useState();
+  const [editId,setEditID] = useState();
 
   const {
     data: station,
@@ -62,7 +65,7 @@ const LanePage = () => {
 
   const [newStation,setNewStation] = useState([]);
   const [editStation,setEditStation] = useState([]);
-  const [editStationId,setEditStationID] = useState([]);
+  // const [editStationId,setEditStationID] = useState([]);
 
   const closeDialog = () =>{
     setOpenDialog(false);
@@ -71,41 +74,56 @@ const LanePage = () => {
 
   const closeEditDialog = () =>{
     setOpenEditDialog(false);
-    setEditStationID([]);
+    // setEditStationID([]);
   }
 
   const confirmEditDialog = () =>{
     setOpenEditDialog(false);
-    let lstStation = editStationId.map((st) => st.id)
-    console.log(lstStation);
+    // console.log(lstStation);
   }
 
   const confirmStation = () =>{
     setOpenDialog(false);
-    let lstStation = newStation.map((st) => st.id)
-    console.log(lstStation);
+    // console.log(lstStation);
   }
 
   //Drawer
   const [open, setOpen] = useState(false);
-  const openDrawer = (e) => {
-    console.log(e);
-    editNameRef.current.value =e.name;
-    editFromRef.current.value = e.from;
-    editToRef.current.value = e.to;
 
-    let eStation = e.note.map((note)=> (station.data.filter((st)=> {
-      return st.id == note 
-    })));
+  const openDrawer = (e) => {
+    // console.log(e);
+    editNameRef.current.value =e.name;
+
+    let startID = station.data.filter((st)=> st.name == e.from)
+    let endID = station.data.filter((st)=> st.name == e.to)
+
+    setEditID(e.id);
+    setEditStart(e.from);
+    setEditEnd(e.to);
+
+    setStartStation(startID[0].station_order)
+    setEndStationId(endID[0].station_order)
+
+    // let eStation = e.note.map((note)=> (...station.data.filter((st)=> {
+    //   return st.id == note 
+    // })));
+    let eStation=[];
+
+    for(let i=0;i<e.note.length;i++) {
+      eStation.push(...station.data.filter((st)=> {
+        return st.id == e.note[i] 
+      }))
+    }
+
     setEditStation(eStation);
-    // console.log(e.note)
-    // console.log(eStation)
+    // console.log(...eStation);
     setStationId(e.rotation);
     setOpen(true);
   };
   const closeDrawer = () => {
     setOpen(false);
-    setEditStationID([]);
+    setEditStation([]);
+    // setEditStationID([]);
   };
 
   // alert box
@@ -133,7 +151,6 @@ const LanePage = () => {
     }
     setOpenWarn(false);
   };
-
 
   const header = [
     {
@@ -190,8 +207,22 @@ const LanePage = () => {
     },
   ];
 
+  const way = [
+    {
+      value:'0',
+      name:'လမ်းကြောင်းအပြည့်'
+    },{
+      value:'1',
+      name:'လက်ဝဲရစ်'
+    },{
+      value:'2',
+      name:'လက်ယာရစ်'
+    },
+  ]
+
   const AddLane = async () => {
-    if(nameRef.current.value == "" || fromRef.current.value == "" || toRef.current.value == "" || newStation.length == 0){
+
+    if(nameRef.current.value == "" || startStation == 0 || endstationId == 0 || newStation.length == 0){
       setResult({
         success:"",
         isSuccess:false,
@@ -202,11 +233,14 @@ const LanePage = () => {
       handleWarnClick();
       return;
     }
+    let startName = station.data.filter((st)=> st.station_order == startStation)
+    console.log(startName[0].name)
+    let endName = station.data.filter((st)=> st.station_order == endstationId)
     let lstStation = newStation.map((st) => st.id)
     const body = {
         name: nameRef.current.value,
-        from: fromRef.current.value,
-        to: toRef.current.value,
+        from: startName[0].name,
+        to: endName[0].name,
         rotation: stationId,
         status:0,
         note:lstStation,
@@ -214,19 +248,30 @@ const LanePage = () => {
 
     await addlane(body);
     refetch();
-    nameRef.current.value = "";
-    fromRef.current.value = "";
-    toRef.current.value = "";
+
     setStationId(0);
     setNewStation([]);
   };
 
+  const StartStationSet =(e)=>{
+    setStartStation(e)
+    // setEditStart(e.from);
+
+  }
+  const endStationSet =(e)=>{
+    setEndStationId(e);
+    // setEditEnd(e.to);
+  }
+
   const editLaneHandler = async () => {
-    if(editStationId.length > 0) return;
-    let lstStation = editStationId.map((st) => st.id)
 
+    if(editStation.length == 0) return;
+    let lstStation = editStation.map((st) => st.id)
 
-    if(editNameRef.current.value == "" || editFromRef.current.value == "" || editToRef.current.value == ""){
+    // console.log(startStation)
+    // console.log(endstationId)
+
+    if(editNameRef.current.value == "" || startStation == 0 || endstationId == 0){
       setResult({
         success:"",
         isSuccess:false,
@@ -237,15 +282,23 @@ const LanePage = () => {
       handleWarnClick();
       return;
     }
-   
+    let startName = station.data.filter((st)=> st.station_order == startStation)
+    // console.log(startName[0].name)
+    let endName = station.data.filter((st)=> st.station_order == endstationId)
+    // console.log(endName[0].name)
+
     const body = {
+      id: editId,
         name: editNameRef.current.value,
-        from: editFromRef.current.value,
-        to: editToRef.current.value,
+        from: startName[0].name,
+        to: endName[0].name,
         rotation: stationId,
         status:0,
         note:lstStation,
     }
+    
+    // console.log(body)
+
     await editLane(body);
     refetch();
     closeDrawer();
@@ -286,16 +339,20 @@ const LanePage = () => {
   };
 
   const editToNewItem = (stat) => {
-    console.log(stat)
+    // console.log(stat)
 
     // let exists = editStationId.some((st)=> st.id === stat.id);
     // if(exists) return;
-    setEditStationID([...editStationId,stat]);
+    setEditStation([...editStation,stat])
+    // setEditStationID([...editStationId,stat]);
   }
 
   const editRemoveItem = (stat) => {
-    setEditStationID([...editStationId.filter((item) => item.id !== stat.id)]);
+    setEditStation([...editStation.filter((item) => item.id !== stat.id)])
+    // setEditStationID([...editStationId.filter((item) => item.id !== stat.id)]);
   };
+
+
 
   useEffect(()=>{
     if(addLaneResutl.isSuccess){
@@ -335,7 +392,7 @@ const LanePage = () => {
       <Drawer placement="right" open={open} onClose={closeDrawer} size={400}>
         <div className="mb-2 flex items-center justify-between p-4">
           <Typography variant="h5" color="blue-gray">
-            Edit Train
+            Edit Lane
           </Typography>
           <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
             <XMarkIcon strokeWidth={2} className="h-5 w-5" />
@@ -343,50 +400,103 @@ const LanePage = () => {
         </div>
         <form className="flex flex-col gap-6 p-4">
           <Input
+          key={uuidv4()}
             type="text"
             label="Name"
             defaultValue={open ? editNameRef.current.value : ""}
             inputRef={editNameRef}
           />
-          <Input
-            type="text"
-            label="From"
-            defaultValue={open ? editFromRef.current.value : ""}
-            inputRef={editFromRef}
-          />
-          <Input
-            type="text"
-            label="To"
-            defaultValue={open ? editToRef.current.value : ""}
-            inputRef={editToRef}
-          />
+
           <div className="w-full">
-            <Select label="Select Way" defaultValue={stationId} onChange={(e) => setStationId(e)}>
-              <Option value="0" key={uuidv4()}>
-                လမ်းကြောင်းအပြည့်
-              </Option>
-              <Option value="1" key={uuidv4()}>
-                လက်ဝဲရစ်
-              </Option>
-              <Option value="2" key={uuidv4()}>
-                လက်ယာရစ်
-              </Option>
+              <Select
+                label="Select Start Station"
+                animate={{
+                  mount: { y: 0 },
+                  unmount: { y: 25 },
+                }}
+                // onChange={(e) => StartStationSet(e)}
+                offset={{
+                  mainAxis: 4,
+                  crossAxis: 4,
+                }}
+                value={editStart}
+              >
+                {stationSuccess ? (
+                  station.data.map((train) => (
+                    <Option
+                      onClick={()=>StartStationSet(train.station_order) }
+                      value={train.station_order.toString()}
+                      key={uuidv4()}
+                    >
+                      {train.name}
+                    </Option>
+                  ))
+                ) : (
+                  <Option value="0" key={uuidv4()}>
+                    ထွက်ခွာမည့် ဘူတာရွေးရန်
+                  </Option>
+                )}
+              </Select>
+          </div>
+
+          <div className="w-full">
+              <Select
+                label="Select End Station"
+                animate={{
+                  mount: { y: 0 },
+                  unmount: { y: 25 },
+                }}
+                // onChange={(e) => endStationSet(e)}
+                offset={{
+                  mainAxis: 4,
+                  crossAxis: 4,
+                }}
+                key={uuidv4()}
+                value={editEnd}
+              >
+                {stationSuccess ? (
+                  station.data.map((train) => (
+                    <Option
+                    onClick={()=>endStationSet(train.station_order)}
+                      value={train.station_order.toString()}
+                      key={uuidv4()}
+                    >
+                      {train.name}
+                    </Option>
+                  ))
+                ) : (
+                  <Option value="0" key={uuidv4()}>
+                    ဆိုက်ရောက်မည့် ဘူတာရွေးရန်
+                  </Option>
+                )}
+              </Select>
+            </div>
+
+          <div className="w-full">
+            <Select label="Select Way" value={stationId == 0 ? "လမ်းကြောင်းအပြည့်" : stationId == 1 ? "လက်ဝဲရစ်" : "လက်ယာရစ်"}>
+              {
+                way.map((w)=>(
+                  <Option 
+                  onClick={()=>setStationId(w.value)}
+                  value={w.value} 
+                  key={uuidv4()}>
+                 {w.name}
+                </Option>
+                ))
+              }
             </Select>
           </div>
-         
             {
               editStation.length > 0 && <div className="border-2 rounded-lg h-44 overflow-y-auto ">
                 <div className="grid-cols-3 grid gap-1">
-                {
-                  editStationId.length > 0 ?editStationId.map((stat)=>(
+                 {
+                  editStation.map((stat)=>(
                     <div className="p-1 rounded-lg bg-green-200 m-1 text-center text-sm">{stat.name}</div>
-                  )) : editStation.map((stat)=>(
-                    <div className="p-1 rounded-lg bg-green-200 m-1 text-center text-sm">{stat[0].name}</div>
                   ))
                 }
               </div>
             </div>
-            }
+          }
             <button
               className="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="button"
@@ -423,7 +533,7 @@ const LanePage = () => {
                   </div>
                   <div className="flex flex-col w-1/2 p-2 h-full overflow-y-auto text-xs ">
                   {
-                    editStationId.length > 0 &&  editStationId.map((stat,i)=>
+                    editStation.length > 0 &&  editStation.map((stat,i)=>
                         <div className="flex justify-between item-center border-2 p-2 mt-1 rounded-md flex-row hover:bg-green-200" key={i.toString()} >
                           <div className="">
                             {stat.name} 
@@ -452,8 +562,6 @@ const LanePage = () => {
               </DialogFooter>
             </Dialog>
 
-
-
           <Button onClick={editLaneHandler}>
             {editLaneResutl.isLoading ? <Spinner /> : "Save"}
           </Button>
@@ -467,7 +575,7 @@ const LanePage = () => {
       </div>
       <div className="flex md:flex-row lg:flex-row xl:flex-row  flex-col w-full mt-4">
         <div className="flex-1 h-full order-2">
-          <Box sx={{ height: 500, width: "100%" }}>
+          <Box sx={{ height: 650, width: "100%" }}>
             {isSuccess ? (
               <DataGrid
                 rows={data?.data}
@@ -505,18 +613,76 @@ const LanePage = () => {
               // defaultValue={open ? editCustomerRef.customer : ""}
               inputRef={nameRef}
             />
-            <Input
+            {/* <Input
               type="text"
               label="From"
               // defaultValue={open ? editCustomerRef.customer : ""}
               inputRef={fromRef}
-            />
-            <Input
+            /> */}
+            <div className="w-full">
+              <Select
+                label="Select Start Station"
+                animate={{
+                  mount: { y: 0 },
+                  unmount: { y: 25 },
+                }}
+                onChange={(e) => StartStationSet(e)}
+                offset={{
+                  mainAxis: 4,
+                  crossAxis: 4,
+                }}
+              >
+                {stationSuccess ? (
+                  station.data.map((train) => (
+                    <Option
+                      value={train.station_order.toString()}
+                      key={uuidv4()}
+                    >
+                      {train.name}
+                    </Option>
+                  ))
+                ) : (
+                  <Option value="0" key={uuidv4()}>
+                    ထွက်ခွာမည့် ဘူတာရွေးရန်
+                  </Option>
+                )}
+              </Select>
+            </div>
+            {/* <Input
               type="text"
               label="To"
               // defaultValue={open ? editCustomerRef.customer : ""}
               inputRef={toRef}
-            />
+            /> */}
+            <div className="w-full">
+              <Select
+                label="Select End Station"
+                animate={{
+                  mount: { y: 0 },
+                  unmount: { y: 25 },
+                }}
+                onChange={(e) => endStationSet(e)}
+                offset={{
+                  mainAxis: 4,
+                  crossAxis: 4,
+                }}
+              >
+                {stationSuccess ? (
+                  station.data.map((train) => (
+                    <Option
+                      value={train.station_order.toString()}
+                      key={uuidv4()}
+                    >
+                      {train.name}
+                    </Option>
+                  ))
+                ) : (
+                  <Option value="0" key={uuidv4()}>
+                    ဆိုက်ရောက်မည့် ဘူတာရွေးရန်
+                  </Option>
+                )}
+              </Select>
+            </div>
 
             <div className="w-full">
               <Select label="Select Way" onChange={(e) => setStationId(e)}>
@@ -538,7 +704,6 @@ const LanePage = () => {
             >
               Select Lane
             </button>
-              
             {
               newStation.length > 0 && <div className="border-2 rounded-lg h-44 overflow-y-auto ">
                 <div className="grid-cols-3 grid gap-1">

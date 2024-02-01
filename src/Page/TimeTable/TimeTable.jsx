@@ -199,12 +199,12 @@ const TimeTable = () => {
       <div className="flex flex-row w-full h-fit justify-between items-center">
         <Breadcrumbs>
           <BiHome size={20} className="opacity-50" />
-          <p className="font-poppins">Time Table</p>
+          <p className="font-poppins">Express Time Table</p>
         </Breadcrumbs>
       </div>
       <div className="flex md:flex-row lg:flex-row xl:flex-row  flex-col w-full mt-4">
         <div className="flex-1 h-full order-2">
-          <Box sx={{ height: 500, width: "100%" }}>
+          <Box sx={{ height: 650, width: "100%" }}>
             {isSuccess ? (
               <DataGrid
                 rows={data?.data}

@@ -112,7 +112,7 @@ const StationDepatureList = () => {
       </Breadcrumbs>
     </div>
     <div className='mt-2 justify-center items-center w-full h-full flex flex-row'>
-        <Box sx={{ height: 500, width: '100%'}}>
+        <Box sx={{ height: 650, width: '100%'}}>
             {isSuccess ?
                 <DataGrid
                     rows={presentLane}

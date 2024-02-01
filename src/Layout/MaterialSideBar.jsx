@@ -80,7 +80,7 @@ const MaterialSideBar = () => {
             accordion: []
         },
         {
-            'title': 'Time Table',
+            'title': 'Express Time Table',
             'icon': BsTable ,
             'link': '/time-table',
             accordion: []

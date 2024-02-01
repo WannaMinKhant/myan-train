@@ -30,11 +30,11 @@ const profileMenuItems = [
     icon: UserCircleIcon,
     link:"/account"
   },
-  {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-    link:"/account"
-  },
+  // {
+  //   label: "Edit Profile",
+  //   icon: Cog6ToothIcon,
+  //   link:"/account"
+  // },
   {
     label: "Sign Out",
     icon: PowerIcon,

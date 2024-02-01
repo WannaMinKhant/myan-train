@@ -13,7 +13,7 @@ import { useGetStationQuery } from "../../ApiService/stationSlice";
 import { useGetTrainQuery } from "../../ApiService/trainSlice";
 import {
   useGetLaneStationMutation,
-  useAddLaneStationMutation,
+  useAddLaneStationMutation,useGetAllLaneStationQuery,
 } from "../../ApiService/TimeTableSlice";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -41,6 +41,7 @@ const StationDepature = () => {
     setOpen(true);
   };
 
+  const { refetch:getTimeDurationStation} = useGetAllLaneStationQuery();
   const { data: lane, isSuccess, isLoading, refetch } = useGetLaneQuery();
   const [getLaneStation, getLaneStationResult] = useGetLaneStationMutation();
   const [addStationTime, addStationTimeResult] = useAddLaneStationMutation();
@@ -58,8 +59,8 @@ const StationDepature = () => {
 
   const [laneId, setLaneId] = useState(0);
   const [endstationId, setEndStationId] = useState(0);
-  const [trainId, setTrainId] = useState(0);
   const [startStation, setStartStation] = useState(0);
+  const [trainId, setTrainId] = useState(0);
   const [TimeStation, setTimeStation] = useState([]);
 
   const chooseStation = async () => {
@@ -103,6 +104,7 @@ const StationDepature = () => {
 
   const addStationTimeTable = async()=>{
 
+    if(addStationTimeResult.isLoading) return;
     let empty = 0;
 
     for(let i=0; i < TimeStation.length; i++) {
@@ -139,6 +141,7 @@ const StationDepature = () => {
     }
     await addStationTime(body);
     setTimeStation([]);
+    getTimeDurationStation();
   }
 
   useEffect(()=>{

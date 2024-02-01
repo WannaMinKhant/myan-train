@@ -323,7 +323,7 @@ const AddStation = () => {
                 </form>
             </div>
             <div className='flex flex-col w-full'>
-                <Box sx={{ height: 500, width: '100%' }}>
+                <Box sx={{ height: 550, width: '100%' }}>
                     {isSuccess ?
                         <DataGrid
                             rows={data?.data}
@@ -338,7 +338,7 @@ const AddStation = () => {
                             
                             density='compact'
                             pageSizeOptions={[5,10,20,50,100]}
-                            checkboxSelection
+                            // checkboxSelection
                             disableRowSelectionOnClick
                             slots={{ toolbar: GridToolbar }}
                             showCellVerticalBorder

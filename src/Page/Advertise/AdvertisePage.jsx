@@ -234,7 +234,7 @@ const AdvertisePage = () => {
       </div>
       <div className="flex flex-row w-full mt-4">
         <div className="flex-row h-full w-2/3 order-2">
-          <Box sx={{ height: 500, width: "100%" }}>
+          <Box sx={{ height: 650, width: "100%" }}>
             {isSuccess ? (
               <DataGrid
                 rows={data?.data}
