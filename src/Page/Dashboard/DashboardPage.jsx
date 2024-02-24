@@ -22,6 +22,15 @@ const DashboardPage = ({ socket }) => {
     };
   }, [socket]); 
 
+  const getUser=()=>{
+    const user = {
+      id: 9999,
+      name:'Server'
+    };
+    socket?.emit('addUser',user);
+  }
+
+
   useEffect(() => {
     // Set the initial status of the station state to 1
     setStation((station) => station.map((e) => ({ ...e, status: "1" })));
@@ -46,6 +55,11 @@ const DashboardPage = ({ socket }) => {
 
   return (
     <div className="w-full h-screen overflow-y-auto scrollbar-hide">
+      <div className="flex flex-row justify-end shadow-md my-2">
+        <div className="px-4 py-2 bg-blue-500 rounded-lg shadow-lg text-white" onClick={getUser}>
+          Refresh
+        </div>
+      </div>
       { isLoading ? <div className="justify-center items-center flex flex-row w-full h-full"><Spinner/></div> : <div className="grid lg:grid-cols-7 md:grid-cols-6 sm:grid-cols-4 font-poppins select-none gap-4">
         { isSuccess &&
           station?.map((station, i) => {
